@@ -196,10 +196,14 @@ class EMT_Lib
      */
     public static function safe_tag_chars($text, $way)
     {
-    	if ($way) 
+	if ($way) {
         	$text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 1) === "a" ? "%%___"  : ""  ) . EMT_Lib::encrypt_tag(trim($m[2]))  . $m[3];'), $text);
-        else
-        	$text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? EMT_Lib::decrypt_tag(substr(trim($m[2]), 4)) : EMT_Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);	
+        }
+        else {
+            // $text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? EMT_Lib::decrypt_tag(substr(trim($m[2]), 4)) : EMT_Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
+            // Косяк со строками вида: [THD<0,4%, кабель 3 м, Jack 1/4"], из-за < и / неверно преобразует safe tags
+		$text = preg_replace_callback('/(\<\/?)([a-z0-9=]+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? EMT_Lib::decrypt_tag(substr(trim($m[2]), 4)) : EMT_Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
+        }
         return $text;
     }
     
