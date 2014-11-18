@@ -633,6 +633,35 @@ class EMT_Lib
         'rsaquo' => 8250,
         'euro' => 8364,
     );
+
+
+    /**
+     * Вернуть числовую html entity по html entinty
+     *
+     * @param string $entity
+     * @return string
+     */
+    public static function html_char_entity_to_numeric_entity($entity)
+    {
+        if(isset(self::$html4_char_ents[$entity])) {
+            return '&#' . self::$html4_char_ents[$entity] . ';';
+        }
+
+        return false;
+    }
+
+    /**
+     * Сконвериторвать все html entity в числовую html entity
+     *
+     * @param string $text
+     */
+    public static function convert_html_entities_to_numeric_entity(&$text)
+    {
+        $text = preg_replace_callback("/\&([a-zA-Z0-9]+)\;/",
+                create_function('$m', '$r = EMT_Lib::html_char_entity_to_numeric_entity($m[1]); return $r ? $r : $m[0];')
+                , $text);
+    }
+
     /**
      * Вернуть уникод символ по html entinty
      *

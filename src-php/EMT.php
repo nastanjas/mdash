@@ -453,7 +453,12 @@ class EMT_Base
 		{
 			EMT_Lib::convert_html_entities_to_unicode($this->_text);
 		}
-		
+
+		if($this->is_on('donumericentity'))
+		{
+			EMT_Lib::convert_html_entities_to_numeric_entity($this->_text);
+		}
+
 		$this->_text = EMT_Lib::safe_tag_chars($this->_text, false);
 		$this->debug($this, 'unsafe_tag_chars', $this->_text);
 
@@ -853,7 +858,8 @@ class EMTypograph extends EMT_Base
 
 		//'Etc.no_nbsp_in_nobr' => 'direct',
 		'Etc.unicode_convert' => array('description' => 'Преобразовывать html-сущности в юникод', 'selector' => '*', 'setting' => 'dounicode' , 'disabled' => true),
-	
+		'Etc.entity_to_numeric_convert' => array('description' => 'Преобразовывать html-сущности в числовые html-сущности', 'selector' => '*', 'setting' => 'donumericentity' , 'disabled' => true),
+
 	);
 
 	/**
