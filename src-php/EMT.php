@@ -12,7 +12,7 @@ require_once("EMT.Tret.php");
 
 /**
  * Основной класс типографа Евгения Муравьёва
- * реализует основные методы запуска и рабыоты типографа
+ * реализует основные методы запуска и работы типографа
  *
  */
 class EMT_Base 
@@ -21,7 +21,7 @@ class EMT_Base
 	private $inited = false;
 
 	/**
-	 * Список Трэтов, которые надо применить к типогрфированию
+	 * Список Трэтов, которые надо применить к типографированию
 	 *
 	 * @var array
 	 */
@@ -119,7 +119,7 @@ class EMT_Base
      */
     private function _add_safe_block($id, $open, $close, $tag)
     {
-    	$this->_safe_blocks[$id] = array(
+    	$this->_safe_blocks[] = array(
     			'id' => $id,
     			'tag' => $tag,
     			'open' =>  $open,
@@ -145,7 +145,9 @@ class EMT_Base
      */
     public function remove_safe_block($id)
     {
-    	unset($this->_safe_blocks[$id]);
+    	foreach($this->_safe_blocks as $k => $block) {
+    		if($block['id']==$id) unset($this->_safe_blocks[$k]);
+    	}
     }
     
     
@@ -205,7 +207,8 @@ class EMT_Base
     	if (count($this->_safe_blocks)) 
     	{
     		$safeType = true === $way ? "EMT_Lib::encrypt_tag(\$m[2])" : "stripslashes(EMT_Lib::decrypt_tag(\$m[2]))";
-       		foreach ($this->_safe_blocks as $block) 
+    		$safeblocks = true === $way ? $this->_safe_blocks : array_reverse($this->_safe_blocks);
+       		foreach ($safeblocks as $block) 
        		{
         		$text = preg_replace_callback("/({$block['open']})(.+?)({$block['close']})/s",   create_function('$m','return $m[1].'.$safeType . '.$m[3];')   , $text);
         	}
@@ -292,8 +295,8 @@ class EMT_Base
 	
 	/**
 	 * Инициализация класса, используется чтобы задать список третов или
-	 * спсиок защищённых блоков, которые можно использовать.
-	 * Такде здесь можно отменить защищённые блоки по умлочнаию
+	 * список защищённых блоков, которые можно использовать.
+	 * Также здесь можно отменить защищённые блоки по умлочнаию
 	 *
 	 */
 	public function init()
@@ -338,7 +341,7 @@ class EMT_Base
 	}
 	
 	/**
-	 * Получаем ТРЕТ по идентивикатору, т.е. заванию класса
+	 * Получаем ТРЕТ по идентификатору, т.е. названию класса
 	 *
 	 * @param unknown_type $name
 	 */
@@ -537,7 +540,7 @@ class EMT_Base
 	 * @param array $map
 	 * @param boolean $disable если ложно, то $map соотвествует тем правилам, которые надо включить
 	 *                         иначе это список правил, которые надо выключить
-	 * @param boolean $strict строго, т.е. те которые не в списку будут тоже обработаны
+	 * @param boolean $strict строго, т.е. те которые не в списке будут тоже обработаны
 	 */
 	public function set_enable_map($map, $disable = false, $strict = true)
 	{
@@ -646,9 +649,9 @@ class EMT_Base
 	
 	/**
 	 * Установить настройки для тертов и правил
-	 * 	1. если селектор является массивом, то тогда утсановка правил будет выполнена для каждого
+	 * 	1. если селектор является массивом, то тогда установка правил будет выполнена для каждого
 	 *     элемента этого массива, как отдельного селектора.
-	 *  2. Если $key не является массивом, то эта настрока будет проставлена согласно селектору
+	 *  2. Если $key не является массивом, то эта настройка будет проставлена согласно селектору
 	 *  3. Если $key массив - то будет задана группа настроек
 	 *       - если $value массив , то настройки определяются по ключам из массива $key, а значения из $value
 	 *       - иначе, $key содержит ключ-значение как массив  
@@ -835,7 +838,7 @@ class EMTypograph extends EMT_Base
 		'Abbr.nobr_before_unit_volt' => 'direct',		
 		'Abbr.nbsp_before_unit' => 'direct',		
 		
-		'OptAlign.all' => array( 'description' => 'Inline стили или CSS', 'hide' => true, 'selector' => 'OptAlign.*'),
+		'OptAlign.all' => array( 'description' => 'Все настройки оптического выравнивания', 'hide' => true, 'selector' => 'OptAlign.*'),
 		'OptAlign.oa_oquote' => 'direct',	
 		'OptAlign.oa_obracket_coma' => 'direct',	
 		'OptAlign.oa_oquote_extra' => 'direct',	
@@ -858,7 +861,7 @@ class EMTypograph extends EMT_Base
 	 *
 	 * @return array
 	 *     all    - полный список
-	 *     group  - сгруппрованный по группам
+	 *     group  - сгруппированный по группам
 	 */
 	public function get_options_list()
 	{
