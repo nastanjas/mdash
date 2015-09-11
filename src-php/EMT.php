@@ -1,9 +1,9 @@
 <?php
 /**
 * Evgeny Muravjev Typograph, http://mdash.ru
-* Version: 3.0 Gold Master
-* Release Date: September 28, 2013
-* Authors: Evgeny Muravjev & Alexander Drutsa
+* Version: 3.5 Gold Master
+* Release Date: July 2, 2015
+* Authors: Evgeny Muravjev & Alexander Drutsa  
 */
 
 
@@ -659,15 +659,33 @@ class EMT_Base
 	 *  2. Если $key не является массивом, то эта настройка будет проставлена согласно селектору
 	 *  3. Если $key массив - то будет задана группа настроек
 	 *       - если $value массив , то настройки определяются по ключам из массива $key, а значения из $value
-	 *       - иначе, $key содержит ключ-значение как массив
+	 *       - иначе, $key содержит ключ-значение как массив  
+	 *  4. $exact_match - если true тогда array selector будет соответсвовать array $key, а не произведению массивов
 	 *
 	 * @param mixed $selector
 	 * @param mixed $key
 	 * @param mixed $value
+	 * @param mixed $exact_match
 	 */
-	public function set($selector, $key , $value = false)
+	public function set($selector, $key , $value = false, $exact_match = false)
 	{
-		if(is_array($selector))
+		if($exact_match && is_array($selector) && is_array($key) && count($selector)==count($key)) {
+			$idx = 0;
+			foreach($key as $x => $y){
+				if(is_array($value))
+				{
+					$kk = $y;
+					$vv = $value[$x];
+				} else {
+					$kk = ( $value ? $y : $x );
+					$vv = ( $value ? $value : $y );
+				}
+				$this->set($selector[$idx], $kk , $vv);
+				$idx++;
+			}
+			return ;
+		}
+		if(is_array($selector)) 
 		{
 			foreach($selector as $val) $this->set($val, $key, $value);
 			return;
@@ -681,11 +699,12 @@ class EMT_Base
 					$kk = $y;
 					$vv = $value[$x];
 				} else {
-					$kk = $x;
-					$vv = $y;
+					$kk = ( $value ? $y : $x );
+					$vv = ( $value ? $value : $y );
 				}
 				$this->set($selector, $kk, $vv);
 			}
+			return ;
 		}
 		$this->doset($selector, $key, $value);
 	}
@@ -788,9 +807,11 @@ class EMTypograph extends EMT_Base
 		'Nobr.super_nbsp' => 'direct',
 		'Nobr.nbsp_in_the_end' => 'direct',
 		'Nobr.phone_builder' => 'direct',
+		'Nobr.phone_builder_v2' => 'direct',
 		'Nobr.ip_address' => 'direct',
 		'Nobr.spaces_nobr_in_surname_abbr' => 'direct',
-		'Nobr.nbsp_celcius' => 'direct',
+		'Nobr.dots_for_surname_abbr' => 'direct',
+		'Nobr.nbsp_celcius' => 'direct',		
 		'Nobr.hyphen_nowrap_in_small_words' => 'direct',
 		'Nobr.hyphen_nowrap' => 'direct',
 		'Nobr.nowrap' => array('description' => 'Nobr (по умолчанию) & nowrap', 'disabled' => true, 'selector' => '*', 'setting' => 'nowrap' ),
@@ -830,19 +851,20 @@ class EMTypograph extends EMT_Base
 		'Space.autospace_after' => array( 'description' => 'Расстановка пробелов после знаков препинания', 'selector' => 'Space.autospace_after_*'),
 		'Space.bracket_fix' => array( 'description' => 'Удаление пробелов внутри скобок, а также расстановка пробела перед скобками',
 				'selector' => array('Space.nbsp_before_open_quote', 'Punctmark.fix_brackets')),
-
-		'Abbr.nbsp_money_abbr' => 'direct',
-		'Abbr.nobr_vtch_itd_itp' => 'direct',
-		'Abbr.nobr_sm_im' => 'direct',
-		'Abbr.nobr_acronym' => 'direct',
-		'Abbr.nobr_locations' => 'direct',
-		'Abbr.nobr_abbreviation' => 'direct',
-		'Abbr.ps_pps' => 'direct',
-		'Abbr.nbsp_org_abbr' => 'direct',
-		'Abbr.nobr_gost' => 'direct',
-		'Abbr.nobr_before_unit_volt' => 'direct',
-		'Abbr.nbsp_before_unit' => 'direct',
-
+				
+		'Abbr.nbsp_money_abbr' => array( 'description' => 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу)', 
+				'selector' => array('Abbr.nbsp_money_abbr', 'Abbr.nbsp_money_abbr_rev')),
+		'Abbr.nobr_vtch_itd_itp' => 'direct',		
+		'Abbr.nobr_sm_im' => 'direct',		
+		'Abbr.nobr_acronym' => 'direct',		
+		'Abbr.nobr_locations' => 'direct',		
+		'Abbr.nobr_abbreviation' => 'direct',		
+		'Abbr.ps_pps' => 'direct',		
+		'Abbr.nbsp_org_abbr' => 'direct',		
+		'Abbr.nobr_gost' => 'direct',		
+		'Abbr.nobr_before_unit_volt' => 'direct',		
+		'Abbr.nbsp_before_unit' => 'direct',		
+		
 		'OptAlign.all' => array( 'description' => 'Все настройки оптического выравнивания', 'hide' => true, 'selector' => 'OptAlign.*'),
 		'OptAlign.oa_oquote' => 'direct',
 		'OptAlign.oa_obracket_coma' => 'direct',
@@ -857,8 +879,10 @@ class EMTypograph extends EMT_Base
 
 
 		//'Etc.no_nbsp_in_nobr' => 'direct',
-		'Etc.unicode_convert' => array('description' => 'Преобразовывать html-сущности в юникод', 'selector' => '*', 'setting' => 'dounicode' , 'disabled' => true),
+		'Etc.unicode_convert' => array('description' => 'Преобразовывать html-сущности в юникод', 'selector' => array('*', 'Etc.nobr_to_nbsp'), 'setting' => array('dounicode','active'), 'exact_selector' => true ,'disabled' => true),
 		'Etc.entity_to_numeric_convert' => array('description' => 'Преобразовывать html-сущности в числовые html-сущности', 'selector' => '*', 'setting' => 'donumericentity' , 'disabled' => true),
+		'Etc.nobr_to_nbsp' => 'direct',
+		'Etc.split_number_to_triads' => 'direct',
 
 	);
 
@@ -946,7 +970,7 @@ class EMTypograph extends EMT_Base
 			{
 				$settingname = "active";
 				if(isset($this->all_options[$name]['setting'])) $settingname = $this->all_options[$name]['setting'];
-				$this->set($this->all_options[$name]['selector'], $settingname, $value);
+				$this->set($this->all_options[$name]['selector'], $settingname, $value, isset($this->all_options[$name]['exact_selector']));
 			}
 		}
 

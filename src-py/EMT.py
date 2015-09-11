@@ -3,8 +3,8 @@
 
 ###################################################
 ##  Evgeny Muravjev Typograph, http://mdash.ru   ##
-##  Version: 3.4-py (beta)                       ##
-##  Release Date: May 4, 2014                    ##
+##  Version: 3.5-py                              ##
+##  Release Date: Jyly 2, 2015                   ##
 ##  Authors: Evgeny Muravjev & Alexander Drutsa  ## 
 ###################################################
 
@@ -25,7 +25,7 @@ _typographSpecificTagId = False
 class _EMT_Lib:
 
     _charsTable = {
-        '"'     : {'html' : {'&laquo;', '&raquo;', '&ldquo;', '&lsquo;', '&bdquo;', '&ldquo;', '&quot;', '&#171;', '&#187;'},
+        '"'     : {'html' : {'&laquo;', '&raquo;', '&rdquo;', '&lsquo;', '&bdquo;', '&ldquo;', '&quot;', '&#171;', '&#187;'},
                           'utf8' : {0x201E, 0x201C, 0x201F, 0x201D, 0x00AB, 0x00BB}},
         ' '     : {'html' : {'&nbsp;', '&thinsp;', '&#160;'},
                           'utf8' : {0x00A0, 0x2002, 0x2003, 0x2008, 0x2009}},
@@ -165,10 +165,10 @@ class _EMT_Lib:
     def safe_tag_chars(self, text, way):
         if (way):
              #OK:
-            text = re.sub('(\</?)(.+?)(\>)', lambda m: m.group(1)+(u"%%___" if m.group(2).strip()[0:1] == u'a' else u"") + EMT_Lib.encrypt_tag(m.group(2).strip()) + m.group(3), text, 0, re.S |re.U)        
+            text = re.sub('(\</?)([^<>]+?)(\>)', lambda m: m.group(0) if (len(m.group(1))==1 and m.group(2).strip()[0:1] == '-' and m.group(2).strip()[1:2] != '-') else  (m.group(1)+(u"%%___" if m.group(2).strip()[0:1] == u'a' else u"") + EMT_Lib.encrypt_tag(m.group(2).strip()) + m.group(3)), text, 0, re.S |re.U)        
         else:
              #OK:
-            text = re.sub('(\</?)(.+?)(\>)', lambda m: m.group(1)+(EMT_Lib.decrypt_tag(m.group(2).strip()[4:]) if m.group(2).strip()[0:3] == u'%%___' else EMT_Lib.decrypt_tag(m.group(2).strip())) + m.group(3), text, 0, re.S|re.U)        
+            text = re.sub('(\</?)([^<>]+?)(\>)', lambda m: m.group(0) if (len(m.group(1))==1 and m.group(2).strip()[0:1] == '-' and m.group(2).strip()[1:2] != '-') else  (m.group(1)+(EMT_Lib.decrypt_tag(m.group(2).strip()[4:]) if m.group(2).strip()[0:3] == u'%%___' else EMT_Lib.decrypt_tag(m.group(2).strip())) + m.group(3)), text, 0, re.S|re.U)        
         return text
 
 
@@ -288,13 +288,13 @@ class _EMT_Lib:
 
     def process_selector_pattern(self, pattern): #TODO: &$pattern - '&' couldn't work
         if(pattern==False):
-            return
+            return False
         #pattern = preg_quote(pattern , '/') #TODO 
         pattern = pattern.replace("*", "[a-z0-9_\-]*") #TODO 
         return pattern
 
     def test_pattern(self, pattern, text):
-        if(pattern == False):
+        if(pattern == False or pattern == None):
             return True
     
         return re.match(pattern, text) #TODO 
@@ -564,8 +564,8 @@ class _EMT_Lib:
 # @return string
 #/
     def html_char_entity_to_unicode(self, entity):
-        if(entity in html4_char_ents):
-            return EMT_Lib.getUnicodeChar(html4_char_ents[entity])
+        if(EMT_Lib.html4_char_ents.get(entity)):
+            return unichr(EMT_Lib.html4_char_ents[entity])
         
         return False
 
@@ -576,10 +576,10 @@ class _EMT_Lib:
 #/
     def convert_html_entities_to_unicode(self, text):  #TODO: &$text - '&' couldn't work
         text = re.sub("\&#([0-9]+)\;", 
-                lambda m: EMT_Lib.getUnicodeChar(int(m.group(1)))
+                lambda m: unichr(int(m.group(1)))
                 , text) #TODO
         text = re.sub("\&#x([0-9A-F]+)\;", 
-                lambda m: EMT_Lib.getUnicodeChar(int(m.group(1),16))
+                lambda m: unichr(int(m.group(1),16))
                 , text) #TODO
         text = re.sub("\&([a-zA-Z0-9]+)\;", 
                 lambda m: EMT_Lib.html_char_entity_to_unicode(m.group(1)) if  EMT_Lib.html_char_entity_to_unicode(m.group(1)) else m.group(0)
@@ -696,6 +696,16 @@ class _EMT_Lib:
     
             return re._expand(pattern, _m(m), replacement)
         return re.sub(pattern, _r, string, count , flags)
+    
+    def split_number(self, num):
+        repl = ""
+        for i in range(len(num),-1,-3):
+            if i-3>=0:
+                repl = ("&thinsp;" if i>3 else "") + num[i-3:i] + repl
+            else:
+                repl = num[0:i] + repl
+        return repl
+        
     
 EMT_Lib = _EMT_Lib()
 
@@ -1150,8 +1160,8 @@ class EMT_Tret:
 
 # /**
 # * Evgeny Muravjev Typograph, http://mdash.ru
-# * Version: 3.0 Gold Master
-# * Release Date: September 28, 2013
+# * Version: 3.5 Gold Master
+# * Release Date: July 2, 2015
 # * Authors: Evgeny Muravjev & Alexander Drutsa  
 # */
 
@@ -1718,26 +1728,55 @@ class EMT_Base:
     # *  3. Если $key массив - то будет задана группа настроек
     # *       - если $value массив , то настройки определяются по ключам из массива $key, а значения из $value
     # *       - иначе, $key содержит ключ-значение как массив  
+	# *  4. $exact_match - если true тогда array selector будет соответсвовать array $key, а не произведению массивов
     # *
     # * @param mixed $selector
     # * @param mixed $key
     # * @param mixed $value
+	# * @param mixed $exact_match
     # */
-    def set(self, selector, key , value = False):
-        if isinstance(selector, (list,tuple)):
-            for val in selector:
-                self.set(val, key, value)
-            return
-        if isinstance(selector, dict):
-            for x in key:
-                y = key[x]
+    def set(self, selector, key , value = False, exact_match = False):
+        if exact_match and isinstance(selector, (list,tuple,set)) and isinstance(key, (list,tuple,dict,set)) and len(selector)==len(key):
+            ind = 0
+            for xx in key:
+                if isinstance(key, dict):
+                    x = xx
+                    y = key[x]
+                else:
+                    x = ind
+                    y = xx
                 if isinstance(value, dict):
                     kk = y
                     vv = value[x]
                 else:
-                    kk = x
-                    vv = y
+                    kk = y if value else x ;
+                    vv = value if value else y ;
+                self.set(selector[ind], kk, vv)
+                ind += 1
+            return 
+        if isinstance(selector, (list,tuple,set)):
+            for val in selector:
+                self.set(val, key, value)
+            return
+        if isinstance(key, (list,tuple,dict,set)):
+            ind = 0
+            for xx in key:
+                if isinstance(key, dict):
+                    x = xx
+                    y = key[x]
+                else:
+                    x = ind
+                    y = xx
+                if isinstance(value, dict):
+                    kk = y
+                    vv = value[x]
+                else:
+                    kk = y if value else x ;
+                    vv = value if value else y ;
+				
                 self.set(selector, kk, vv)
+                ind += 1
+            return 
         self.doset(selector, key, value)
     
     
@@ -1820,8 +1859,10 @@ class EMTypograph(EMT_Base):
                 'Nobr.super_nbsp' : 'direct',
                 'Nobr.nbsp_in_the_end' : 'direct',
                 'Nobr.phone_builder' : 'direct',
+                'Nobr.phone_builder_v2' : 'direct',
                 'Nobr.ip_address' : 'direct',
                 'Nobr.spaces_nobr_in_surname_abbr' : 'direct',
+                'Nobr.dots_for_surname_abbr' : 'direct',                
                 'Nobr.nbsp_celcius' : 'direct',		
                 'Nobr.hyphen_nowrap_in_small_words' : 'direct',
                 'Nobr.hyphen_nowrap' : 'direct',
@@ -1861,9 +1902,12 @@ class EMTypograph(EMT_Base):
                 'Space.clear_before_after_punct' : { 'description' : 'Удаление пробелов перед и после знаков препинания в предложении', 'selector' : 'Space.remove_space_before_punctuationmarks'},
                 'Space.autospace_after' : { 'description' : 'Расстановка пробелов после знаков препинания', 'selector' : 'Space.autospace_after_*'},
                 'Space.bracket_fix' : { 'description' : 'Удаление пробелов внутри скобок, а также расстановка пробела перед скобками', 
-                                    'selector' : {'Space.nbsp_before_open_quote', 'Punctmark.fix_brackets'}
-                                },                            
-                'Abbr.nbsp_money_abbr' : 'direct',		
+                                    'selector' : ['Space.nbsp_before_open_quote', 'Punctmark.fix_brackets']
+                                },             
+
+                'Abbr.nbsp_money_abbr' : { 'description' : 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу)', 
+                                    'selector' : ['Abbr.nbsp_money_abbr', 'Abbr.nbsp_money_abbr_rev']
+                                },    
                 'Abbr.nobr_vtch_itd_itp' : 'direct',		
                 'Abbr.nobr_sm_im' : 'direct',		
                 'Abbr.nobr_acronym' : 'direct',		
@@ -1888,7 +1932,8 @@ class EMTypograph(EMT_Base):
                 
                 
                 #'Etc.no_nbsp_in_nobr' : 'direct',		
-                'Etc.unicode_convert' : {'description' : 'Преобразовывать html-сущности в юникод', 'selector' : '*', 'setting' : 'dounicode' , 'disabled' : True},
+                'Etc.unicode_convert' : {'description' : 'Преобразовывать html-сущности в юникод', 'selector' : ['*', 'Etc.nobr_to_nbsp'], 'setting' : ['dounicode','active'], 'exact_selector' : True ,'disabled': True},
+				'Etc.nobr_to_nbsp' : 'direct',
         }
         
         
@@ -1973,7 +2018,7 @@ class EMTypograph(EMT_Base):
                 settingname = "active"
                 if self.all_options[name].has_key('setting'):
                     settingname = self.all_options[name]['setting']
-                self.set(self.all_options[name]['selector'], settingname, value)
+                self.set(self.all_options[name]['selector'], settingname, value, self.all_options[name].get('exact_selector'))
         
         if name == "OptAlign.layout":
             if value == "style":
