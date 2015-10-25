@@ -1,6 +1,8 @@
 <?php
 namespace EMT;
 
+use EMT\Lib;
+
 /**
  * Базовый класс для группы правил обработки текста
  * Класс группы должен наследовать, данный класс и задавать
@@ -81,8 +83,8 @@ class Tret
 
 	/**
 	 * Установить режим разметки для данного Трэта если не было раньше установлено,
-	 *   EMT_Lib::LAYOUT_STYLE - с помощью стилей
-	 *   EMT_Lib::LAYOUT_CLASS - с помощью классов
+	 *   Lib::LAYOUT_STYLE - с помощью стилей
+	 *   Lib::LAYOUT_CLASS - с помощью классов
 	 *
 	 * @param int $kind
 	 */
@@ -94,13 +96,13 @@ class Tret
 
 	/**
 	 * Установить режим разметки для данного Трэта,
-	 *   EMT_Lib::LAYOUT_STYLE - с помощью стилей
-	 *   EMT_Lib::LAYOUT_CLASS - с помощью классов
-	 *   EMT_Lib::LAYOUT_STYLE|EMT_Lib::LAYOUT_CLASS - оба метода
+	 *   Lib::LAYOUT_STYLE - с помощью стилей
+	 *   Lib::LAYOUT_CLASS - с помощью классов
+	 *   Lib::LAYOUT_STYLE|Lib::LAYOUT_CLASS - оба метода
 	 *
 	 * @param int $kind
 	 */
-	public function set_tag_layout($layout = EMT_Lib::LAYOUT_STYLE)
+	public function set_tag_layout($layout = Lib::LAYOUT_STYLE)
 	{
 		$this->use_layout = $layout;
 		$this->use_layout_set = true;
@@ -334,7 +336,7 @@ class Tret
 	/**
 	 * Создание защищенного тега с содержимым
 	 *
-	 * @see 	EMT_lib::build_safe_tag
+	 * @see 	lib::build_safe_tag
 	 * @param 	string $content
 	 * @param 	string $tag
 	 * @param 	array $attribute
@@ -364,8 +366,8 @@ class Tret
 			$attribute['class'] = $classname;
 		}
 
-		return EMT_Lib::build_safe_tag($content, $tag, $attribute,
-				$this->use_layout === false? EMT_Lib::LAYOUT_STYLE  : $this->use_layout );
+		return Lib::build_safe_tag($content, $tag, $attribute,
+				$this->use_layout === false? Lib::LAYOUT_STYLE  : $this->use_layout );
 	}
 
 

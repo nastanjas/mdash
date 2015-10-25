@@ -1,6 +1,8 @@
 <?php
 namespace EMT;
 
+use EMT\Lib;
+
 class Lib
 {
     const LAYOUT_STYLE = 1;
@@ -101,11 +103,11 @@ class Lib
      *
      * <code>
      *  // Remove UTF-8 chars:
-     *  $str = EMT_Lib::clear_special_chars('your text', 'utf8');
+     *  $str = Lib::clear_special_chars('your text', 'utf8');
      *  // ... or HTML codes only:
-     *  $str = EMT_Lib::clear_special_chars('your text', 'html');
+     *  $str = Lib::clear_special_chars('your text', 'html');
      *  // ... or combo:
-     *  $str = EMT_Lib::clear_special_chars('your text');
+     *  $str = Lib::clear_special_chars('your text');
      * </code>
      *
      * @param   string $text
@@ -198,16 +200,16 @@ class Lib
     public static function safe_tag_chars($text, $way)
     {
     if ($way) {
-            // $text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 1) === "a" ? "%%___"  : ""  ) . EMT_Lib::encrypt_tag(trim($m[2]))  . $m[3];'), $text);
+            // $text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 1) === "a" ? "%%___"  : ""  ) . Lib::encrypt_tag(trim($m[2]))  . $m[3];'), $text);
             // Взял изменение из оригинального репозитория. Свои правки закомментил выше
-            $text = preg_replace_callback('/(\<\/?)([^<>]+?)(\>)/s', create_function('$m','return (strlen($m[1])==1 && substr(trim($m[2]), 0, 1) == \'-\' && substr(trim($m[2]), 1, 1) != \'-\')? $m[0] : $m[1].( substr(trim($m[2]), 0, 1) === "a" ? "%%___"  : ""  ) . EMT_Lib::encrypt_tag(trim($m[2]))  . $m[3];'), $text);
+            $text = preg_replace_callback('/(\<\/?)([^<>]+?)(\>)/s', create_function('$m','return (strlen($m[1])==1 && substr(trim($m[2]), 0, 1) == \'-\' && substr(trim($m[2]), 1, 1) != \'-\')? $m[0] : $m[1].( substr(trim($m[2]), 0, 1) === "a" ? "%%___"  : ""  ) . EMT\Lib::encrypt_tag(trim($m[2]))  . $m[3];'), $text);
         }
         else {
-            // $text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? EMT_Lib::decrypt_tag(substr(trim($m[2]), 4)) : EMT_Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
+            // $text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? Lib::decrypt_tag(substr(trim($m[2]), 4)) : Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
             // Косяк со строками вида: [THD<0,4%, кабель 3 м, Jack 1/4"], из-за < и / неверно преобразует safe tags
-            //$text = preg_replace_callback('/(\<\/?)([a-zA-Z0-9=\%\_\/]+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? EMT_Lib::decrypt_tag(substr(trim($m[2]), 4)) : EMT_Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
+            //$text = preg_replace_callback('/(\<\/?)([a-zA-Z0-9=\%\_\/]+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? Lib::decrypt_tag(substr(trim($m[2]), 4)) : Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
             // Взял изменение из оригинального репозитория. Свои правки закомментил выше
-            $text = preg_replace_callback('/(\<\/?)([^<>]+?)(\>)/s', create_function('$m','return (strlen($m[1])==1 && substr(trim($m[2]), 0, 1) == \'-\' && substr(trim($m[2]), 1, 1) != \'-\')? $m[0] : $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? EMT_Lib::decrypt_tag(substr(trim($m[2]), 4)) : EMT_Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
+            $text = preg_replace_callback('/(\<\/?)([^<>]+?)(\>)/s', create_function('$m','return (strlen($m[1])==1 && substr(trim($m[2]), 0, 1) == \'-\' && substr(trim($m[2]), 1, 1) != \'-\')? $m[0] : $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? EMT\Lib::decrypt_tag(substr(trim($m[2]), 4)) : EMT\Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
         }
         return $text;
     }
@@ -221,7 +223,7 @@ class Lib
      */
     public static function decode_internal_blocks($text)
     {
-        $text = preg_replace_callback('/'.EMT_Lib::INTERNAL_BLOCK_OPEN.'([a-zA-Z0-9\/=]+?)'.EMT_Lib::INTERNAL_BLOCK_CLOSE.'/s', create_function('$m','return EMT_Lib::decrypt_tag($m[1]);'), $text);
+        $text = preg_replace_callback('/'.Lib::INTERNAL_BLOCK_OPEN.'([a-zA-Z0-9\/=]+?)'.Lib::INTERNAL_BLOCK_CLOSE.'/s', create_function('$m','return Lib::decrypt_tag($m[1]);'), $text);
         return $text;
     }
 
@@ -233,7 +235,7 @@ class Lib
      */
     public static function iblock($text)
     {
-        return EMT_Lib::INTERNAL_BLOCK_OPEN. EMT_Lib::encrypt_tag($text).EMT_Lib::INTERNAL_BLOCK_CLOSE;
+        return Lib::INTERNAL_BLOCK_OPEN. Lib::encrypt_tag($text).Lib::INTERNAL_BLOCK_CLOSE;
     }
 
 
@@ -245,7 +247,7 @@ class Lib
      * @param   array $attribute список атрибутов, где ключ - имя атрибута, а значение - само значение данного атрибута
      * @return  string
      */
-    public static function build_safe_tag($content, $tag = 'span', $attribute = array(), $layout = EMT_Lib::LAYOUT_STYLE )
+    public static function build_safe_tag($content, $tag = 'span', $attribute = array(), $layout = Lib::LAYOUT_STYLE )
     {
         $htmlTag = $tag;
 
@@ -261,7 +263,7 @@ class Lib
         if (count($attribute))
         {
 
-            if($layout & EMT_lib::LAYOUT_STYLE)
+            if($layout & Lib::LAYOUT_STYLE)
             {
                 if(isset($attribute['__style']) && $attribute['__style'])
                 {
@@ -290,7 +292,7 @@ class Lib
 
         }
 
-        if( ($layout & EMT_lib::LAYOUT_CLASS ) && $classname) {
+        if( ($layout & Lib::LAYOUT_CLASS ) && $classname) {
             $htmlTag .= " class=\"$classname\"";
         }
 
@@ -663,7 +665,7 @@ class Lib
     public static function convert_html_entities_to_numeric_entity(&$text)
     {
         $text = preg_replace_callback("/\&([a-zA-Z0-9]+)\;/",
-                create_function('$m', '$r = EMT_Lib::html_char_entity_to_numeric_entity($m[1]); return $r ? $r : $m[0];')
+                create_function('$m', '$r = EMT\Lib::html_char_entity_to_numeric_entity($m[1]); return $r ? $r : $m[0];')
                 , $text);
     }
 
@@ -687,13 +689,13 @@ class Lib
     public static function convert_html_entities_to_unicode(&$text)
     {
         $text = preg_replace_callback("/\&#([0-9]+)\;/",
-                create_function('$m', 'return EMT_Lib::_getUnicodeChar(intval($m[1]));')
+                create_function('$m', 'return Lib::_getUnicodeChar(intval($m[1]));')
                 , $text);
         $text = preg_replace_callback("/\&#x([0-9A-F]+)\;/",
-                create_function('$m', 'return EMT_Lib::_getUnicodeChar(hexdec($m[1]));')
+                create_function('$m', 'return Lib::_getUnicodeChar(hexdec($m[1]));')
                 , $text);
         $text = preg_replace_callback("/\&([a-zA-Z0-9]+)\;/",
-                create_function('$m', '$r = EMT_Lib::html_char_entity_to_unicode($m[1]); return $r ? $r : $m[0];')
+                create_function('$m', '$r = Lib::html_char_entity_to_unicode($m[1]); return $r ? $r : $m[0];')
                 , $text);
     }
 

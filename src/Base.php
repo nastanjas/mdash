@@ -233,17 +233,17 @@ class Base
 	private function create_object($tret)
 	{
 		// если класса нету, попытаемся его прогрузить, например, если стандартный
-		if(!class_exists($tret))
+		/*if(!class_exists("Tret\\" . $tret))
 		{
-			if(preg_match("/^EMT_Tret_([a-zA-Z0-9_]+)$/",$tret, $m))
+			if(preg_match("/^([a-zA-Z0-9_]+)$/",$tret, $m))
 			{
 				$tname = $m[1];
 				$fname = str_replace("_"," ",$tname);
 				$fname = ucwords($fname);
 				$fname = str_replace(" ",".",$fname);
-				//if(file_exists("EMT.Tret.".$fname.".php"))
+				if(file_exists("Tret/".$fname.".php"))
 				{
-					require_once("Tret.".$fname.".php");
+					require_once("Tret/".$fname.".php");
 				}
 			}
 		}
@@ -251,7 +251,7 @@ class Base
 		{
 			$this->error("Класс $tret не найден. Пожалуйста, подргузите нужный файл.");
 			return null;
-		}
+		}*/
 
 		$obj = new $tret();
 		$obj->EMT     = $this;
@@ -533,7 +533,7 @@ class Base
 	 */
 	public function set_class_layout_prefix($prefix )
 	{
-		$this->class_layout_prefix = $prefix === true ? "emt_" : $prefix;
+		$this->class_layout_prefix = $prefix === true ? "EMT\\" : $prefix;
 	}
 
 	/**

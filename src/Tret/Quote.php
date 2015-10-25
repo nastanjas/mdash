@@ -2,6 +2,7 @@
 namespace EMT\Tret;
 
 use EMT\Tret;
+use EMT\Lib;
 
 /**
  * @see EMT_Tret
@@ -100,7 +101,7 @@ class Quote extends Tret
 			$off = 0;
 			while(true)
 			{
-				$p = EMT_Lib::strpos_ex($textx, array("&laquo;", "&raquo;"), $off);
+				$p = Lib::strpos_ex($textx, array("&laquo;", "&raquo;"), $off);
 				if($p===false) break;
 				if($p['str'] == "&laquo;")
 				{
@@ -208,7 +209,7 @@ class Quote extends Tret
             level = 0
             off = 0
             while True:
-                p = EMT_Lib.strpos_ex(textx, ["&laquo;", "&raquo;"], off)
+                p = Lib.strpos_ex(textx, ["&laquo;", "&raquo;"], off)
 
                 if isinstance(p, bool) and (p == False):
                     break
@@ -233,9 +234,9 @@ class Quote extends Tret
 
                         while (True):
                             lokpos = okposstack.pop(len(okposstack)-1)
-                            k = EMT_Lib.substr(textx,  lokpos, off - lokpos)
-                            k = EMT_Lib.str_replace(QUOTE_CRAWSE_OPEN, QUOTE_FIRS_OPEN, k)
-                            k = EMT_Lib.str_replace(QUOTE_CRAWSE_CLOSE, QUOTE_FIRS_CLOSE, k)
+                            k = Lib.substr(textx,  lokpos, off - lokpos)
+                            k = Lib.str_replace(QUOTE_CRAWSE_OPEN, QUOTE_FIRS_OPEN, k)
+                            k = Lib.str_replace(QUOTE_CRAWSE_CLOSE, QUOTE_FIRS_CLOSE, k)
                             #//$k = preg_replace("/(^|[^0-9])([0-9]+)\&raquo\;/ui", '\1\2&Prime;', $k, 1, $amount);
 
                             amount = 0
@@ -262,7 +263,7 @@ class Quote extends Tret
                         #// успешно сделали замену
                         if (amount == 1):
                             #// заново просмотрим содержимое
-                            textx = EMT_Lib.substr(textx, 0, lokpos) + k + EMT_Lib.substr(textx, off)
+                            textx = Lib.substr(textx, 0, lokpos) + k + Lib.substr(textx, off)
                             off = lokpos
                             level = 0
                             continue
@@ -271,7 +272,7 @@ class Quote extends Tret
                         if (amount == 0):
                             #// говорим, что всё в порядке
                             level = 0
-                            textx = EMT_Lib.substr(textx, 0, p['pos']) + '&quot;' + EMT_Lib.substr(textx, off)
+                            textx = Lib.substr(textx, 0, p['pos']) + '&quot;' + Lib.substr(textx, off)
                             off = p['pos'] + len('&quot;')
                             okposstack = [off]
                             continue
@@ -281,10 +282,10 @@ class Quote extends Tret
 
                 #// закрывающих меньше, чем надо
                 if (level>0):
-                    k = EMT_Lib.substr(textx, okpos)
-                    k = EMT_Lib.str_replace(QUOTE_CRAWSE_OPEN, QUOTE_FIRS_OPEN, k)
-                    k = EMT_Lib.str_replace(QUOTE_CRAWSE_CLOSE, QUOTE_FIRS_CLOSE, k)
-                    textx = EMT_Lib.substr(textx, 0, okpos) + k
+                    k = Lib.substr(textx, okpos)
+                    k = Lib.str_replace(QUOTE_CRAWSE_OPEN, QUOTE_FIRS_OPEN, k)
+                    k = Lib.str_replace(QUOTE_CRAWSE_CLOSE, QUOTE_FIRS_CLOSE, k)
+                    textx = Lib.substr(textx, 0, okpos) + k
             texts_out.append(textx)
 
         self._text = exp.join(texts_out)

@@ -50,7 +50,7 @@ class Etc extends Tret
 		'split_number_to_triads' => array(
 				'description'	=> 'Разбиение числа на триады',
 				'pattern' 		=> '/([^a-zA-Z0-9<\)]|^)([0-9]{5,})([^a-zA-Z>\(]|$)/eu',
-				'replacement' 	=> '$m[1].str_replace(" ","&thinsp;",EMT_Lib::split_number($m[2])).$m[3] '
+				'replacement' 	=> '$m[1].str_replace(" ","&thinsp;",EMT\Lib::split_number($m[2])).$m[3] '
 				//'function'	    => 'split_number'
 			),
 		'expand_no_nbsp_in_nobr' => array(
@@ -118,20 +118,20 @@ class Etc extends Tret
         e = re.escape(arr[1])
 
         match = u'/(^|[^a-zа-яё])([a-zа-яё]+)\&nbsp\;(' + b + u')/iu'
-        p = EMT_Lib.parse_preg_pattern(match)
+        p = EMT\Lib.parse_preg_pattern(match)
         while (True):
-            self._text = EMT_Lib.preg_replace(match, u"\\1\\3\\2 ", self._text)
+            self._text = EMT\Lib.preg_replace(match, u"\\1\\3\\2 ", self._text)
             if not (re.match(p['pattern'], self._text, p['flags'])):
                 break
 
         match = u'/(' + e + u')\&nbsp\;([a-zа-яё]+)($|[^a-zа-яё])/iu'
-        p = EMT_Lib.parse_preg_pattern(match)
+        p = EMT\Lib.parse_preg_pattern(match)
         while (True):
-            self._text = EMT_Lib.preg_replace(match, u" \\2\\1\\3", self._text)
+            self._text = EMT\Lib.preg_replace(match, u" \\2\\1\\3", self._text)
             if not (re.match(p['pattern'], self._text, p['flags'])):
                 break
 
-        self._text = EMT_Lib.preg_replace(u'/' + b + u'.*?' + e + u'/iue', u'EMT_Lib.str_replace("&nbsp;"," ",m.group(0))' , self._text )
+        self._text = EMT\Lib.preg_replace(u'/' + b + u'.*?' + e + u'/iue', u'EMT\Lib.str_replace("&nbsp;"," ",m.group(0))' , self._text )
 
     def nobr_to_nbsp(self):
         thetag = self.tag(u"###", u'span', {u'class': u"nowrap"})
@@ -139,8 +139,7 @@ class Etc extends Tret
         b = re.escape(arr[0])
         e = re.escape(arr[1])
 
-        self._text = EMT_Lib.preg_replace(u'/' + b + u'(.*?)' + e + u'/iue', u'EMT_Lib.str_replace(" ","&nbsp;",m.group(1))' , self._text )
+        self._text = EMT\Lib.preg_replace(u'/' + b + u'(.*?)' + e + u'/iue', u'EMT\Lib.str_replace(" ","&nbsp;",m.group(1))' , self._text )
 
 PYTHON**/
 
-?>

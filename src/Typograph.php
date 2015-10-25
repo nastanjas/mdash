@@ -2,10 +2,24 @@
 namespace EMT;
 
 use EMT\Base;
+use EMT\Lib;
 
 class Typograph extends Base
 {
-    public $trets = array('EMT_Tret_Quote', 'EMT_Tret_Dash', 'EMT_Tret_Symbol', 'EMT_Tret_Punctmark', 'EMT_Tret_Number',  'EMT_Tret_Space', 'EMT_Tret_Abbr',  'EMT_Tret_Nobr', 'EMT_Tret_Date', 'EMT_Tret_OptAlign', 'EMT_Tret_Etc', 'EMT_Tret_Text');
+    public $trets = array(
+        Tret\Quote::class,
+        Tret\Dash::class,
+        Tret\Symbol::class,
+        Tret\Punctmark::class,
+        Tret\Number::class,
+        Tret\Space::class,
+        Tret\Abbr::class,
+        Tret\Nobr::class,
+        Tret\Date::class,
+        Tret\OptAlign::class,
+        Tret\Etc::class,
+        Tret\Text::class,
+    );
 
 
     protected $group_list  = array(
@@ -203,8 +217,8 @@ class Typograph extends Base
 
         if($name == "OptAlign.layout")
         {
-            if($value == "style") $this->set_tag_layout(EMT_Lib::LAYOUT_STYLE);
-            if($value == "class") $this->set_tag_layout(EMT_Lib::LAYOUT_CLASS);
+            if($value == "style") $this->set_tag_layout(Lib::LAYOUT_STYLE);
+            if($value == "class") $this->set_tag_layout(Lib::LAYOUT_CLASS);
         }
 
     }
