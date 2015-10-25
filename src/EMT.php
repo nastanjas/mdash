@@ -1,21 +1,20 @@
 <?php
+namespace EMT;
+
 /**
 * Evgeny Muravjev Typograph, http://mdash.ru
 * Version: 3.5 Gold Master
 * Release Date: July 2, 2015
-* Authors: Evgeny Muravjev & Alexander Drutsa  
+* Authors: Evgeny Muravjev & Alexander Drutsa
 */
 
-
-require_once("EMT.Lib.php");
-require_once("EMT.Tret.php");
 
 /**
  * Основной класс типографа Евгения Муравьёва
  * реализует основные методы запуска и работы типографа
  *
  */
-class EMT_Base
+class Base
 {
 	private $_text = "";
 	private $inited = false;
@@ -659,7 +658,7 @@ class EMT_Base
 	 *  2. Если $key не является массивом, то эта настройка будет проставлена согласно селектору
 	 *  3. Если $key массив - то будет задана группа настроек
 	 *       - если $value массив , то настройки определяются по ключам из массива $key, а значения из $value
-	 *       - иначе, $key содержит ключ-значение как массив  
+	 *       - иначе, $key содержит ключ-значение как массив
 	 *  4. $exact_match - если true тогда array selector будет соответсвовать array $key, а не произведению массивов
 	 *
 	 * @param mixed $selector
@@ -685,7 +684,7 @@ class EMT_Base
 			}
 			return ;
 		}
-		if(is_array($selector)) 
+		if(is_array($selector))
 		{
 			foreach($selector as $val) $this->set($val, $key, $value);
 			return;
@@ -775,8 +774,9 @@ class EMT_Base
 
 }
 
+use EMT\Base;
 
-class EMTypograph extends EMT_Base
+class Typograph extends Base
 {
 	public $trets = array('EMT_Tret_Quote', 'EMT_Tret_Dash', 'EMT_Tret_Symbol', 'EMT_Tret_Punctmark', 'EMT_Tret_Number',  'EMT_Tret_Space', 'EMT_Tret_Abbr',  'EMT_Tret_Nobr', 'EMT_Tret_Date', 'EMT_Tret_OptAlign', 'EMT_Tret_Etc', 'EMT_Tret_Text');
 
@@ -811,7 +811,7 @@ class EMTypograph extends EMT_Base
 		'Nobr.ip_address' => 'direct',
 		'Nobr.spaces_nobr_in_surname_abbr' => 'direct',
 		'Nobr.dots_for_surname_abbr' => 'direct',
-		'Nobr.nbsp_celcius' => 'direct',		
+		'Nobr.nbsp_celcius' => 'direct',
 		'Nobr.hyphen_nowrap_in_small_words' => 'direct',
 		'Nobr.hyphen_nowrap' => 'direct',
 		'Nobr.nowrap' => array('description' => 'Nobr (по умолчанию) & nowrap', 'disabled' => true, 'selector' => '*', 'setting' => 'nowrap' ),
@@ -851,20 +851,20 @@ class EMTypograph extends EMT_Base
 		'Space.autospace_after' => array( 'description' => 'Расстановка пробелов после знаков препинания', 'selector' => 'Space.autospace_after_*'),
 		'Space.bracket_fix' => array( 'description' => 'Удаление пробелов внутри скобок, а также расстановка пробела перед скобками',
 				'selector' => array('Space.nbsp_before_open_quote', 'Punctmark.fix_brackets')),
-				
-		'Abbr.nbsp_money_abbr' => array( 'description' => 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу)', 
+
+		'Abbr.nbsp_money_abbr' => array( 'description' => 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу)',
 				'selector' => array('Abbr.nbsp_money_abbr', 'Abbr.nbsp_money_abbr_rev')),
-		'Abbr.nobr_vtch_itd_itp' => 'direct',		
-		'Abbr.nobr_sm_im' => 'direct',		
-		'Abbr.nobr_acronym' => 'direct',		
-		'Abbr.nobr_locations' => 'direct',		
-		'Abbr.nobr_abbreviation' => 'direct',		
-		'Abbr.ps_pps' => 'direct',		
-		'Abbr.nbsp_org_abbr' => 'direct',		
-		'Abbr.nobr_gost' => 'direct',		
-		'Abbr.nobr_before_unit_volt' => 'direct',		
-		'Abbr.nbsp_before_unit' => 'direct',		
-		
+		'Abbr.nobr_vtch_itd_itp' => 'direct',
+		'Abbr.nobr_sm_im' => 'direct',
+		'Abbr.nobr_acronym' => 'direct',
+		'Abbr.nobr_locations' => 'direct',
+		'Abbr.nobr_abbreviation' => 'direct',
+		'Abbr.ps_pps' => 'direct',
+		'Abbr.nbsp_org_abbr' => 'direct',
+		'Abbr.nobr_gost' => 'direct',
+		'Abbr.nobr_before_unit_volt' => 'direct',
+		'Abbr.nbsp_before_unit' => 'direct',
+
 		'OptAlign.all' => array( 'description' => 'Все настройки оптического выравнивания', 'hide' => true, 'selector' => 'OptAlign.*'),
 		'OptAlign.oa_oquote' => 'direct',
 		'OptAlign.oa_obracket_coma' => 'direct',
@@ -997,6 +997,3 @@ class EMTypograph extends EMT_Base
 		return $obj->apply();
 	}
 }
-
-
-?>
