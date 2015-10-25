@@ -1,14 +1,18 @@
 <?php
+namespace EMT\Tret;
+
+use EMT\Tret;
+
 /**
  * @see EMT_Tret
  */
-require_once('EMT.Tret.php');
+// require_once('EMT.Tret.php');
 
-class EMT_Tret_Number extends EMT_Tret
+class Number extends Tret
 {
 	public $title = "Числа, дроби, математические знаки";
-	
-	
+
+
 	public $rules = array(
 		'minus_between_nums' => array(
 				'description'	=> 'Расстановка знака минус между числами',
@@ -55,21 +59,19 @@ class EMT_Tret_Number extends EMT_Tret
 			),
 			*/
 		'thinsp_between_number_triads' => array(
-				'description'	=> 'Объединение триад чисел полупробелом',			
+				'description'	=> 'Объединение триад чисел полупробелом',
 				'pattern' 		=> '/([0-9]{1,3}( [0-9]{3}){1,})(.|$)/ue',
 				'replacement' 	=> '($m[3]=="-"? $m[0]:str_replace(" ","&thinsp;",$m[1]).$m[3])'
 			),
 		'thinsp_between_no_and_number' => array(
-				'description'	=> 'Пробел между симоволом номера и числом',			
+				'description'	=> 'Пробел между симоволом номера и числом',
 				'pattern' 		=> '/(№|\&#8470\;)(\s|&nbsp;)*(\d)/iu',
 				'replacement' 	=> '&#8470;&thinsp;\3'
 			),
 		'thinsp_between_sect_and_number' => array(
-				'description'	=> 'Пробел между параграфом и числом',			
+				'description'	=> 'Пробел между параграфом и числом',
 				'pattern' 		=> '/(§|\&sect\;)(\s|&nbsp;)*(\d+|[IVX]+|[a-zа-яё]+)/ui',
 				'replacement' 	=> '&sect;&thinsp;\3'
 			),
 		);
 }
-
-?>

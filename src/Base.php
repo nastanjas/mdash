@@ -8,6 +8,7 @@ namespace EMT;
 * Authors: Evgeny Muravjev & Alexander Drutsa
 */
 
+use EMT\Lib;
 
 /**
  * Основной класс типографа Евгения Муравьёва
@@ -205,7 +206,7 @@ class Base
     {
     	if (count($this->_safe_blocks))
     	{
-    		$safeType = true === $way ? "EMT_Lib::encrypt_tag(\$m[2])" : "stripslashes(EMT_Lib::decrypt_tag(\$m[2]))";
+    		$safeType = true === $way ? "Lib::encrypt_tag(\$m[2])" : "stripslashes(Lib::decrypt_tag(\$m[2]))";
     		$safeblocks = true === $way ? $this->_safe_blocks : array_reverse($this->_safe_blocks);
        		foreach ($safeblocks as $block)
        		{
@@ -225,7 +226,7 @@ class Base
      */
     public function decode_internal_blocks($text)
     {
-		return EMT_Lib::decode_internal_blocks($text);
+		return Lib::decode_internal_blocks($text);
     }
 
 
@@ -242,7 +243,7 @@ class Base
 				$fname = str_replace(" ",".",$fname);
 				//if(file_exists("EMT.Tret.".$fname.".php"))
 				{
-					require_once("EMT.Tret.".$fname.".php");
+					require_once("Tret.".$fname.".php");
 				}
 			}
 		}
@@ -260,7 +261,7 @@ class Base
 
 	private function get_short_tret($tretname)
 	{
-		if(preg_match("/^EMT_Tret_([a-zA-Z0-9_]+)$/",$tretname, $m))
+		if(preg_match("/^Tret_([a-zA-Z0-9_]+)$/",$tretname, $m))
 		{
 			return $m[1];
 		}
@@ -314,9 +315,9 @@ class Base
 	{
 		if(is_object($class))
 		{
-			if(!is_a($class, "EMT_Tret"))
+			if(!is_a($class, "Tret"))
 			{
-				$this->error("You are adding Tret that doesn't inherit base class EMT_Tret", get_class($class));
+				$this->error("You are adding Tret that doesn't inherit base class Tret", get_class($class));
 				return false;
 			}
 
@@ -396,10 +397,10 @@ class Base
 		$this->_text = $this->safe_blocks($this->_text, true);
 		$this->debug($this, 'safe_blocks', $this->_text);
 
-		$this->_text = EMT_Lib::safe_tag_chars($this->_text, true);
+		$this->_text = Lib::safe_tag_chars($this->_text, true);
 		$this->debug($this, 'safe_tag_chars', $this->_text);
 
-		$this->_text = EMT_Lib::clear_special_chars($this->_text);
+		$this->_text = Lib::clear_special_chars($this->_text);
 		$this->debug($this, 'clear_special_chars', $this->_text);
 
 		foreach ($atrets as $tret)
@@ -436,7 +437,7 @@ class Base
 				foreach($this->tret_objects[$tret]->debug_info as $di)
 				{
 					$unsafetext = $di['text'];
-					$unsafetext = EMT_Lib::safe_tag_chars($unsafetext, false);
+					$unsafetext = Lib::safe_tag_chars($unsafetext, false);
 					$unsafetext = $this->safe_blocks($unsafetext, false);
 					$this->debug($tret, $di['place'], $unsafetext, $di['text']);
 				}
@@ -450,15 +451,15 @@ class Base
 
 		if($this->is_on('dounicode'))
 		{
-			EMT_Lib::convert_html_entities_to_unicode($this->_text);
+			Lib::convert_html_entities_to_unicode($this->_text);
 		}
 
 		if($this->is_on('donumericentity'))
 		{
-			EMT_Lib::convert_html_entities_to_numeric_entity($this->_text);
+			Lib::convert_html_entities_to_numeric_entity($this->_text);
 		}
 
-		$this->_text = EMT_Lib::safe_tag_chars($this->_text, false);
+		$this->_text = Lib::safe_tag_chars($this->_text, false);
 		$this->debug($this, 'unsafe_tag_chars', $this->_text);
 
 		$this->_text = $this->safe_blocks($this->_text, false);
@@ -513,13 +514,13 @@ class Base
 
 	/**
 	 * Установить режим разметки,
-	 *   EMT_Lib::LAYOUT_STYLE - с помощью стилей
-	 *   EMT_Lib::LAYOUT_CLASS - с помощью классов
-	 *   EMT_Lib::LAYOUT_STYLE|EMT_Lib::LAYOUT_CLASS - оба метода
+	 *   Lib::LAYOUT_STYLE - с помощью стилей
+	 *   Lib::LAYOUT_CLASS - с помощью классов
+	 *   Lib::LAYOUT_STYLE|Lib::LAYOUT_CLASS - оба метода
 	 *
 	 * @param int $layout
 	 */
-	public function set_tag_layout($layout = EMT_Lib::LAYOUT_STYLE)
+	public function set_tag_layout($layout = Lib::LAYOUT_STYLE)
 	{
 		$this->use_layout = $layout;
 		$this->use_layout_set = true;
@@ -618,20 +619,20 @@ class Base
 				$rule_pattern = implode(".", $pa);
 			}
 		}
-		EMT_Lib::_process_selector_pattern($tret_pattern);
-		EMT_Lib::_process_selector_pattern($rule_pattern);
+		Lib::_process_selector_pattern($tret_pattern);
+		Lib::_process_selector_pattern($rule_pattern);
 		if($selector == "*") $this->settings[$key] = $value;
 
 		foreach ($this->trets as $tret)
 		{
 			$t1 = $this->get_short_tret($tret);
-			if(!EMT_Lib::_test_pattern($tret_pattern, $t1))	if(!EMT_Lib::_test_pattern($tret_pattern, $tret)) continue;
+			if(!Lib::_test_pattern($tret_pattern, $t1))	if(!Lib::_test_pattern($tret_pattern, $tret)) continue;
 			$tret_obj = $this->get_tret($tret);
 			if($key == "active")
 			{
 				foreach($tret_obj->rules as $rulename => $v)
 				{
-					if(!EMT_Lib::_test_pattern($rule_pattern, $rulename)) continue;
+					if(!Lib::_test_pattern($rule_pattern, $rulename)) continue;
 					if((strtolower($value) === "on") || ($value===1) || ($value === true) || ($value=="1")) $tret_obj->enable_rule($rulename);
 					if((strtolower($value) === "off") || ($value===0) || ($value === false) || ($value=="0")) $tret_obj->disable_rule($rulename);
 				}
@@ -642,7 +643,7 @@ class Base
 				} else {
 					foreach($tret_obj->rules as $rulename => $v)
 					{
-						if(!EMT_Lib::_test_pattern($rule_pattern, $rulename)) continue;
+						if(!Lib::_test_pattern($rule_pattern, $rulename)) continue;
 						$tret_obj->set_rule($rulename, $key, $value);
 					}
 				}
@@ -769,231 +770,4 @@ class Base
 		foreach($setupmap as $k => $v) $this->do_setup($k , $v);
 	}
 
-
-
-
-}
-
-use EMT\Base;
-
-class Typograph extends Base
-{
-	public $trets = array('EMT_Tret_Quote', 'EMT_Tret_Dash', 'EMT_Tret_Symbol', 'EMT_Tret_Punctmark', 'EMT_Tret_Number',  'EMT_Tret_Space', 'EMT_Tret_Abbr',  'EMT_Tret_Nobr', 'EMT_Tret_Date', 'EMT_Tret_OptAlign', 'EMT_Tret_Etc', 'EMT_Tret_Text');
-
-
-	protected $group_list  = array(
-		'Quote'     => true,
-		'Dash'      => true,
-		'Nobr'      => true,
-		'Symbol'    => true,
-		'Punctmark' => true,
-		'Number'    => true,
-		'Date'      => true,
-		'Space'     => true,
-		'Abbr'      => true,
-		'OptAlign'  => true,
-		'Text'      => true,
-		'Etc'       => true,
-	);
-	protected $all_options = array(
-
-		'Quote.quotes' => array( 'description' => 'Расстановка «кавычек-елочек» первого уровня', 'selector' => "Quote.*quote" ),
-		'Quote.quotation' => array( 'description' => 'Внутренние кавычки-лапки', 'selector' => "Quote", 'setting' => 'no_bdquotes', 'reversed' => true ),
-
-		'Dash.to_libo_nibud' => 'direct',
-		'Dash.iz_za_pod' => 'direct',
-		'Dash.ka_de_kas' => 'direct',
-
-		'Nobr.super_nbsp' => 'direct',
-		'Nobr.nbsp_in_the_end' => 'direct',
-		'Nobr.phone_builder' => 'direct',
-		'Nobr.phone_builder_v2' => 'direct',
-		'Nobr.ip_address' => 'direct',
-		'Nobr.spaces_nobr_in_surname_abbr' => 'direct',
-		'Nobr.dots_for_surname_abbr' => 'direct',
-		'Nobr.nbsp_celcius' => 'direct',
-		'Nobr.hyphen_nowrap_in_small_words' => 'direct',
-		'Nobr.hyphen_nowrap' => 'direct',
-		'Nobr.nowrap' => array('description' => 'Nobr (по умолчанию) & nowrap', 'disabled' => true, 'selector' => '*', 'setting' => 'nowrap' ),
-
-		'Symbol.tm_replace'     => 'direct',
-		'Symbol.r_sign_replace' => 'direct',
-		'Symbol.copy_replace' => 'direct',
-		'Symbol.apostrophe' => 'direct',
-		'Symbol.degree_f' => 'direct',
-		'Symbol.arrows_symbols' => 'direct',
-		'Symbol.no_inches' => array( 'description' => 'Расстановка дюйма после числа', 'selector' => "Quote", 'setting' => 'no_inches', 'reversed' => true ),
-
-		'Punctmark.auto_comma' => 'direct',
-		'Punctmark.hellip' => 'direct',
-		'Punctmark.fix_pmarks' => 'direct',
-		'Punctmark.fix_excl_quest_marks' => 'direct',
-		'Punctmark.dot_on_end' => 'direct',
-
-		'Number.minus_between_nums' => 'direct',
-		'Number.minus_in_numbers_range' => 'direct',
-		'Number.auto_times_x' => 'direct',
-		'Number.simple_fraction' => 'direct',
-		'Number.math_chars' => 'direct',
-		//'Number.split_number_to_triads' => 'direct',
-		'Number.thinsp_between_number_triads' => 'direct',
-		'Number.thinsp_between_no_and_number' => 'direct',
-		'Number.thinsp_between_sect_and_number' => 'direct',
-
-		'Date.years' => 'direct',
-		'Date.mdash_month_interval' => 'direct',
-		'Date.nbsp_and_dash_month_interval' => 'direct',
-		'Date.nobr_year_in_date' => 'direct',
-
-		'Space.many_spaces_to_one' => 'direct',
-		'Space.clear_percent' => 'direct',
-		'Space.clear_before_after_punct' => array( 'description' => 'Удаление пробелов перед и после знаков препинания в предложении', 'selector' => 'Space.remove_space_before_punctuationmarks'),
-		'Space.autospace_after' => array( 'description' => 'Расстановка пробелов после знаков препинания', 'selector' => 'Space.autospace_after_*'),
-		'Space.bracket_fix' => array( 'description' => 'Удаление пробелов внутри скобок, а также расстановка пробела перед скобками',
-				'selector' => array('Space.nbsp_before_open_quote', 'Punctmark.fix_brackets')),
-
-		'Abbr.nbsp_money_abbr' => array( 'description' => 'Форматирование денежных сокращений (расстановка пробелов и привязка названия валюты к числу)',
-				'selector' => array('Abbr.nbsp_money_abbr', 'Abbr.nbsp_money_abbr_rev')),
-		'Abbr.nobr_vtch_itd_itp' => 'direct',
-		'Abbr.nobr_sm_im' => 'direct',
-		'Abbr.nobr_acronym' => 'direct',
-		'Abbr.nobr_locations' => 'direct',
-		'Abbr.nobr_abbreviation' => 'direct',
-		'Abbr.ps_pps' => 'direct',
-		'Abbr.nbsp_org_abbr' => 'direct',
-		'Abbr.nobr_gost' => 'direct',
-		'Abbr.nobr_before_unit_volt' => 'direct',
-		'Abbr.nbsp_before_unit' => 'direct',
-
-		'OptAlign.all' => array( 'description' => 'Все настройки оптического выравнивания', 'hide' => true, 'selector' => 'OptAlign.*'),
-		'OptAlign.oa_oquote' => 'direct',
-		'OptAlign.oa_obracket_coma' => 'direct',
-		'OptAlign.oa_oquote_extra' => 'direct',
-		'OptAlign.layout' => array( 'description' => 'Inline стили или CSS' ),
-
-		'Text.paragraphs' => 'direct',
-		'Text.auto_links' => 'direct',
-		'Text.email' => 'direct',
-		'Text.breakline' => 'direct',
-		'Text.no_repeat_words' => 'direct',
-
-
-		//'Etc.no_nbsp_in_nobr' => 'direct',
-		'Etc.unicode_convert' => array('description' => 'Преобразовывать html-сущности в юникод', 'selector' => array('*', 'Etc.nobr_to_nbsp'), 'setting' => array('dounicode','active'), 'exact_selector' => true ,'disabled' => true),
-		'Etc.entity_to_numeric_convert' => array('description' => 'Преобразовывать html-сущности в числовые html-сущности', 'selector' => '*', 'setting' => 'donumericentity' , 'disabled' => true),
-		'Etc.nobr_to_nbsp' => 'direct',
-		'Etc.split_number_to_triads' => 'direct',
-
-	);
-
-	/**
-	 * Получить список имеющихся опций
-	 *
-	 * @return array
-	 *     all    - полный список
-	 *     group  - сгруппированный по группам
-	 */
-	public function get_options_list()
-	{
-		$arr['all'] = array();
-		$bygroup = array();
-		foreach($this->all_options as $opt => $op)
-		{
-			$arr['all'][$opt] = $this->get_option_info($opt);
-			$x = explode(".",$opt);
-			$bygroup[$x[0]][] = $opt;
-		}
-		$arr['group'] = array();
-		foreach($this->group_list as $group => $ginfo)
-		{
-			if($ginfo === true)
-			{
-				$tret = $this->get_tret($group);
-				if($tret) $info['title'] = $tret->title; else $info['title'] = "Не определено";
-			} else {
-				$info = $ginfo;
-			}
-			$info['name'] = $group;
-			$info['options'] = array();
-			if(is_array($bygroup[$group])) foreach($bygroup[$group] as $opt) $info['options'][] = $opt;
-			$arr['group'][] = $info;
-		}
-		return $arr;
-	}
-
-
-	/**
-	 * Получить информацию о настройке
-	 *
-	 * @param string $key
-	 * @return array|false
-	 */
-	protected function get_option_info($key)
-	{
-		if(!isset($this->all_options[$key])) return false;
-		if(is_array($this->all_options[$key])) return $this->all_options[$key];
-
-		if(($this->all_options[$key] == "direct") || ($this->all_options[$key] == "reverse"))
-		{
-			$pa = explode(".", $key);
-			$tret_pattern = $pa[0];
-			$tret = $this->get_tret($tret_pattern);
-			if(!$tret) return false;
-			if(!isset($tret->rules[$pa[1]])) return false;
-			$array = $tret->rules[$pa[1]];
-			$array['way'] = $this->all_options[$key];
-			return $array;
-		}
-		return false;
-	}
-
-
-	/**
-	 * Установка одной метанастройки
-	 *
-	 * @param string $name
-	 * @param mixed $value
-	 */
-	public function do_setup($name, $value)
-	{
-		if(!isset($this->all_options[$name])) return;
-
-		// эта настрока связана с правилом ядра
-		if(is_string($this->all_options[$name]))
-		{
-			$this->set($name, "active", $value );
-			return ;
-		}
-		if(is_array($this->all_options[$name]))
-		{
-			if(isset($this->all_options[$name]['selector']))
-			{
-				$settingname = "active";
-				if(isset($this->all_options[$name]['setting'])) $settingname = $this->all_options[$name]['setting'];
-				$this->set($this->all_options[$name]['selector'], $settingname, $value, isset($this->all_options[$name]['exact_selector']));
-			}
-		}
-
-		if($name == "OptAlign.layout")
-		{
-			if($value == "style") $this->set_tag_layout(EMT_Lib::LAYOUT_STYLE);
-			if($value == "class") $this->set_tag_layout(EMT_Lib::LAYOUT_CLASS);
-		}
-
-	}
-
-	/**
-	 * Запустить типограф со стандартными параметрами
-	 *
-	 * @param string $text
-	 * @param array $options
-	 * @return string
-	 */
-	public static function fast_apply($text, $options = null)
-	{
-		$obj = new self();
-		if(is_array($options)) $obj->setup($options);
-		$obj->set_text($text);
-		return $obj->apply();
-	}
 }

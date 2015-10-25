@@ -1,10 +1,14 @@
 <?php
+namespace EMT\Tret;
+
+use EMT\Tret;
+
 /**
  * @see EMT_Tret
  */
-require_once('EMT.Tret.php');
+// require_once('EMT.Tret.php');
 
-class EMT_Tret_Dash extends EMT_Tret
+class Dash extends Tret
 {
 	public $title = "Дефисы и тире";
 	public $rules = array(
@@ -16,8 +20,8 @@ class EMT_Tret_Dash extends EMT_Tret
 		'mdash' => array(
 				'description'	=> 'Тире после кавычек, скобочек, пунктуации',
 				'pattern' 		=> array(
-						'/([a-zа-яё0-9]+|\,|\:|\)|\&(ra|ld)quo\;|\|\"|\>)(\040|\t)(—|\-|\&mdash\;)(\s|$|\<)/ui', 
-						'/(\,|\:|\)|\")(—|\-|\&mdash\;)(\s|$|\<)/ui', 
+						'/([a-zа-яё0-9]+|\,|\:|\)|\&(ra|ld)quo\;|\|\"|\>)(\040|\t)(—|\-|\&mdash\;)(\s|$|\<)/ui',
+						'/(\,|\:|\)|\")(—|\-|\&mdash\;)(\s|$|\<)/ui',
 						),
 				'replacement' 	=> array(
 						'\1&nbsp;&mdash;\5',
@@ -33,7 +37,7 @@ class EMT_Tret_Dash extends EMT_Tret
 				'description'	=> 'Тире после знаков восклицания, троеточия и прочее',
 				'pattern' 		=> '/(\.|\!|\?|\&hellip\;)(\040|\t|\&nbsp\;)(\-|\&mdash\;)(\040|\t|\&nbsp\;)/',
 				'replacement' 	=> '\1 &mdash;&nbsp;'
-			),						
+			),
 		'iz_za_pod' => array(
 				'description'	=> 'Расстановка дефисов между из-за, из-под',
 				'pattern' 		=> '/(\s|\&nbsp\;|\>|^)(из)(\040|\t|\&nbsp\;)\-?(за|под)([\.\,\!\?\:\;]|\040|\&nbsp\;)/uie',
@@ -65,11 +69,9 @@ class EMT_Tret_Dash extends EMT_Tret
 						),
 				'replacement' 	=> '($m[1] == "&nbsp;" ? " " : $m[1]) . $m[2]."-".$m[4] . ($m[5] == "&nbsp;"? " " : $m[5])'
 			),
-		
-			
-					
-		);
-	
-}
 
-?>
+
+
+		);
+
+}

@@ -1,6 +1,7 @@
 <?php
+namespace EMT;
 
-class EMT_Lib
+class Lib
 {
     const LAYOUT_STYLE = 1;
     const LAYOUT_CLASS = 2;
@@ -725,7 +726,7 @@ class EMT_Lib
     public static function ifop($cond, $true, $false) {
         return $cond ? $true : $false;
     }
-    
+
     function split_number($num) {
         return number_format($num, 0, '', ' ');
     }

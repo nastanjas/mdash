@@ -1,10 +1,14 @@
 <?php
+namespace EMT\Tret;
+
+use EMT\Tret;
+
 /**
  * @see EMT_Tret
  */
-require_once('EMT.Tret.php');
+// require_once('EMT.Tret.php');
 
-class EMT_Tret_Symbol extends EMT_Tret
+class Symbol extends Tret
 {
 	/**
 	 * Базовые параметры тофа
@@ -14,21 +18,21 @@ class EMT_Tret_Symbol extends EMT_Tret
 	public $classes = array(
 			'nowrap'           => 'word-spacing:nowrap;',
 		);
-	
-	
+
+
 	public $title = "Специальные символы";
-	public $rules = array(	
+	public $rules = array(
 		'tm_replace' => array(
 				'description'	=> 'Замена (tm) на символ торговой марки',
-				'pattern' 		=> '/([\040\t])?\(tm\)/i', 
+				'pattern' 		=> '/([\040\t])?\(tm\)/i',
 				'replacement' 	=> '&trade;'
 			),
 		'r_sign_replace' => array(
 				'description'	=> 'Замена (R) на символ зарегистрированной торговой марки',
 				'pattern' 		=> array(
-					'/(.|^)\(r\)(.|$)/ie', 
-					//'/([^\>]|^)\(r\)([^\<]|$)/ie', 
-					//'/\>\(r\)\</i', 
+					'/(.|^)\(r\)(.|$)/ie',
+					//'/([^\>]|^)\(r\)([^\<]|$)/ie',
+					//'/\>\(r\)\</i',
 					),
 				'replacement' 	=> array(
 					//'$m[1].$this->tag("&reg;", "sup").$m[2]',
@@ -39,14 +43,14 @@ class EMT_Tret_Symbol extends EMT_Tret
 		'copy_replace' => array(
 				'description'	=> 'Замена (c) на символ копирайт',
 				'pattern' 		=> array(
-							'/\((c|с)\)\s+/iu', 
-							'/\((c|с)\)($|\.|,|!|\?)/iu', 
+							'/\((c|с)\)\s+/iu',
+							'/\((c|с)\)($|\.|,|!|\?)/iu',
 							),
 				'replacement' 	=> array(
 							'&copy;&nbsp;',
 							'&copy;\2',
 							),
-			),		
+			),
 		'apostrophe' => array(
 				'description'	=> 'Расстановка правильного апострофа в текстах',
 				'pattern' 		=> '/(\s|^|\>|\&rsquo\;)([a-zа-яё]{1,})\'([a-zа-яё]+)/ui',
@@ -78,8 +82,6 @@ class EMT_Tret_Symbol extends EMT_Tret
 				'pattern' 		=> array('/\-\>/', '/\<\-/', '/→/u', '/←/u'),
 				//'replacement' 	=> array('\1&rarr;\2', '\1&larr;\2', '&rarr;', '&larr;' ),
 				'replacement' 	=> array('&rarr;', '&larr;', '&rarr;', '&larr;' ),
-			),			
+			),
 		);
 }
-
-?>

@@ -1,17 +1,21 @@
 <?php
+namespace EMT\Tret;
+
+use EMT\Tret;
+
 /**
  * @see EMT_Tret
  */
-require_once('EMT.Tret.php');
+// require_once('EMT.Tret.php');
 
-class EMT_Tret_Date extends EMT_Tret
+class Date extends Tret
 {
 	public $title = "Даты и дни";
-	
+
 	public $classes = array(
 			'nowrap'           => 'word-spacing:nowrap;',
 			);
-	
+
 	public $rules = array(
 		'years' => array(
 				'description'	=> 'Установка тире и пробельных символов в периодах дат',
@@ -23,9 +27,9 @@ class EMT_Tret_Date extends EMT_Tret
 				'disabled'		=> true,
 				'pattern' 		=> '/((январ|феврал|сентябр|октябр|ноябр|декабр)([ьяюе]|[её]м)|(апрел|июн|июл)([ьяюе]|ем)|(март|август)([ауе]|ом)?|ма[йяюе]|маем)\-((январ|феврал|сентябр|октябр|ноябр|декабр)([ьяюе]|[её]м)|(апрел|июн|июл)([ьяюе]|ем)|(март|август)([ауе]|ом)?|ма[йяюе]|маем)/iu',
 				'replacement' 	=> '\1&mdash;\8'
-			),		
+			),
 		'nbsp_and_dash_month_interval' => array(
-				'description'	=> 'Расстановка тире и объединение в неразрывные периоды дней',			
+				'description'	=> 'Расстановка тире и объединение в неразрывные периоды дней',
 				'disabled'      => true,
 				'pattern' 		=> '/([^\>]|^)(\d+)(\-|\&minus\;|\&mdash\;)(\d+)( |\&nbsp\;)(января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря)([^\<]|$)/ieu',
 				'replacement' 	=> '$m[1].$this->tag($m[2]."&mdash;".$m[4]." ".$m[6],"span", array("class"=>"nowrap")).$m[7]'
@@ -43,16 +47,14 @@ class EMT_Tret_Date extends EMT_Tret
 			),
 		'space_posle_goda' => array(
 				'description'	=> 'Пробел после года',
-				'pattern' 		=> '/(^|\040|\&nbsp\;)([0-9]{3,4})(год([ауе]|ом)?)([^a-zа-яё]|$)/ui', 
+				'pattern' 		=> '/(^|\040|\&nbsp\;)([0-9]{3,4})(год([ауе]|ом)?)([^a-zа-яё]|$)/ui',
 				'replacement' 	=> '\1\2 \3\5'
 			),
 		'nbsp_posle_goda_abbr' => array(
 				'description'	=> 'Пробел после года',
-				'pattern' 		=> '/(^|\040|\&nbsp\;|\"|\&laquo\;)([0-9]{3,4})[ ]?(г\.)([^a-zа-яё]|$)/ui', 
+				'pattern' 		=> '/(^|\040|\&nbsp\;|\"|\&laquo\;)([0-9]{3,4})[ ]?(г\.)([^a-zа-яё]|$)/ui',
 				'replacement' 	=> '\1\2&nbsp;\3\4'
 			),
-		
+
 		);
 }
-
-?>
