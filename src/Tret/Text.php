@@ -68,7 +68,7 @@ class Text extends Tret
 		$text = $this->preg_replace_e('/([\040\t]+)?(\n)+([\040\t]*)(\n)+/e', '$m[1]."</" . self::BASE64_PARAGRAPH_TAG . ">".EMT\Lib::iblock($m[2].$m[3])."<" .self::BASE64_PARAGRAPH_TAG . ">"', $text);
 		//$text = $this->preg_replace_e('/([\040\t]+)?(\n)+([\040\t]*)(\n)+/e', '"</" . self::BASE64_PARAGRAPH_TAG . ">"."<" .self::BASE64_PARAGRAPH_TAG . ">"', $text);
 		//может от открвающего до закрывающего ?!
-		$text = preg_replace('/\<' . self::BASE64_PARAGRAPH_TAG . '\>('.EMT\Lib::INTERNAL_BLOCK_OPEN.'[a-zA-Z0-9\/=]+?'.EMT\Lib::INTERNAL_BLOCK_CLOSE.')?\<\/' . self::BASE64_PARAGRAPH_TAG . '\>/s', "", $text);
+		$text = preg_replace('/\<' . self::BASE64_PARAGRAPH_TAG . '\>('.\EMT\Lib::INTERNAL_BLOCK_OPEN.'[a-zA-Z0-9\/=]+?'.\EMT\Lib::INTERNAL_BLOCK_CLOSE.')?\<\/' . self::BASE64_PARAGRAPH_TAG . '\>/s', "", $text);
 		return $text;
 	}
 
@@ -80,7 +80,7 @@ class Text extends Tret
 	protected function build_paragraphs()
 	{
 		$r = mb_strpos($this->_text, '<' . self::BASE64_PARAGRAPH_TAG . '>' );
-		$p = EMT\Lib::rstrpos($this->_text, '</' . self::BASE64_PARAGRAPH_TAG . '>' )	;
+		$p = \EMT\Lib::rstrpos($this->_text, '</' . self::BASE64_PARAGRAPH_TAG . '>' )	;
 		if(($r!== false) && ($p !== false)) {
 
 			$beg = mb_substr($this->_text,0,$r);
