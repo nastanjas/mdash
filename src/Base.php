@@ -206,7 +206,7 @@ class Base
     {
     	if (count($this->_safe_blocks))
     	{
-    		$safeType = true === $way ? "Lib::encrypt_tag(\$m[2])" : "stripslashes(Lib::decrypt_tag(\$m[2]))";
+    		$safeType = true === $way ? "\EMT\Lib::encrypt_tag(\$m[2])" : "stripslashes(\EMT\Lib::decrypt_tag(\$m[2]))";
     		$safeblocks = true === $way ? $this->_safe_blocks : array_reverse($this->_safe_blocks);
        		foreach ($safeblocks as $block)
        		{
