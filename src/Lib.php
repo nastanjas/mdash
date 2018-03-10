@@ -1,4 +1,5 @@
 <?php
+
 namespace EMT;
 
 class Lib
@@ -14,46 +15,48 @@ class Lib
      * @var array
      */
     public static $_charsTable = array(
-        '"'     => array('html' => array('&laquo;', '&raquo;', '&rdquo;', '&lsquo;', '&bdquo;', '&ldquo;', '&quot;', '&#171;', '&#187;'),
-                         'utf8' => array(0x201E, 0x201C, 0x201F, 0x201D, 0x00AB, 0x00BB)),
-        ' '     => array('html' => array('&nbsp;', '&thinsp;', '&#160;'),
-                         'utf8' => array(0x00A0, 0x2002, 0x2003, 0x2008, 0x2009)),
-        '-'     => array('html' => array(/*'&mdash;',*/ '&ndash;', '&minus;', '&#151;', '&#8212;', '&#8211;'),
-                         'utf8' => array(0x002D, /*0x2014,*/ 0x2010, 0x2012, 0x2013)),
-        '—'     => array('html' => array('&mdash;'),
-                         'utf8' => array(0x2014)),
-        '=='    => array('html' => array('&equiv;'),
-                         'utf8' => array(0x2261)),
-        '...'   => array('html' => array('&hellip;', '&#0133;'),
-                         'utf8' => array(0x2026)),
-        '!='    => array('html' => array('&ne;', '&#8800;'),
-                         'utf8' => array(0x2260)),
-        '<='    => array('html' => array('&le;', '&#8804;'),
-                         'utf8' => array(0x2264)),
-        '>='    => array('html' => array('&ge;', '&#8805;'),
-                         'utf8' => array(0x2265)),
-        '1/2'   => array('html' => array('&frac12;', '&#189;'),
-                         'utf8' => array(0x00BD)),
-        '1/4'   => array('html' => array('&frac14;', '&#188;'),
-                         'utf8' => array(0x00BC)),
-        '3/4'   => array('html' => array('&frac34;', '&#190;'),
-                         'utf8' => array(0x00BE)),
-        '+-'    => array('html' => array('&plusmn;', '&#177;'),
-                         'utf8' => array(0x00B1)),
-        '&'     => array('html' => array('&amp;', '&#38;')),
-        '(tm)'  => array('html' => array('&trade;', '&#153;'),
-                         'utf8' => array(0x2122)),
+        '"' => array('html' => array('&laquo;', '&raquo;', '&rdquo;', '&lsquo;', '&bdquo;', '&ldquo;', '&quot;', '&#171;', '&#187;'),
+            'utf8' => array(0x201E, 0x201C, 0x201F, 0x201D, 0x00AB, 0x00BB)),
+        ' ' => array('html' => array('&nbsp;', '&thinsp;', '&#160;'),
+            'utf8' => array(0x00A0, 0x2002, 0x2003, 0x2008, 0x2009)),
+        '-' => array('html' => array(/*'&mdash;',*/
+            '&ndash;', '&minus;', '&#151;', '&#8212;', '&#8211;'),
+            'utf8' => array(0x002D, /*0x2014,*/
+                0x2010, 0x2012, 0x2013)),
+        '—' => array('html' => array('&mdash;'),
+            'utf8' => array(0x2014)),
+        '==' => array('html' => array('&equiv;'),
+            'utf8' => array(0x2261)),
+        '...' => array('html' => array('&hellip;', '&#0133;'),
+            'utf8' => array(0x2026)),
+        '!=' => array('html' => array('&ne;', '&#8800;'),
+            'utf8' => array(0x2260)),
+        '<=' => array('html' => array('&le;', '&#8804;'),
+            'utf8' => array(0x2264)),
+        '>=' => array('html' => array('&ge;', '&#8805;'),
+            'utf8' => array(0x2265)),
+        '1/2' => array('html' => array('&frac12;', '&#189;'),
+            'utf8' => array(0x00BD)),
+        '1/4' => array('html' => array('&frac14;', '&#188;'),
+            'utf8' => array(0x00BC)),
+        '3/4' => array('html' => array('&frac34;', '&#190;'),
+            'utf8' => array(0x00BE)),
+        '+-' => array('html' => array('&plusmn;', '&#177;'),
+            'utf8' => array(0x00B1)),
+        '&' => array('html' => array('&amp;', '&#38;')),
+        '(tm)' => array('html' => array('&trade;', '&#153;'),
+            'utf8' => array(0x2122)),
         //'(r)'     => array('html' => array('<sup>&reg;</sup>', '&reg;', '&#174;'),
-        '(r)'   => array('html' => array('&reg;', '&#174;'),
-                         'utf8' => array(0x00AE)),
-        '(c)'   => array('html' => array('&copy;', '&#169;'),
-                         'utf8' => array(0x00A9)),
-        '§'     => array('html' => array('&sect;', '&#167;'),
-                         'utf8' => array(0x00A7)),
-        '`'     => array('html' => array('&#769;')),
-        '\''    => array('html' => array('&rsquo;', '’')),
-        'x'     => array('html' => array('&times;', '&#215;'),
-                         'utf8' => array('×') /* какой же у него может быть код? */),
+        '(r)' => array('html' => array('&reg;', '&#174;'),
+            'utf8' => array(0x00AE)),
+        '(c)' => array('html' => array('&copy;', '&#169;'),
+            'utf8' => array(0x00A9)),
+        '§' => array('html' => array('&sect;', '&#167;'),
+            'utf8' => array(0x00A7)),
+        '`' => array('html' => array('&#769;')),
+        '\'' => array('html' => array('&rsquo;', '’')),
+        'x' => array('html' => array('&times;', '&#215;'),
+            'utf8' => array('×') /* какой же у него может быть код? */),
 
     );
 
@@ -80,16 +83,16 @@ class Lib
             return chr($c);
         } else if ($c <= 0x7FF) {
             return chr(0xC0 | $c >> 6)
-                 . chr(0x80 | $c & 0x3F);
+                . chr(0x80 | $c & 0x3F);
         } else if ($c <= 0xFFFF) {
             return chr(0xE0 | $c >> 12)
-                 . chr(0x80 | $c >> 6 & 0x3F)
-                 . chr(0x80 | $c & 0x3F);
+                . chr(0x80 | $c >> 6 & 0x3F)
+                . chr(0x80 | $c & 0x3F);
         } else if ($c <= 0x10FFFF) {
             return chr(0xF0 | $c >> 18)
-                 . chr(0x80 | $c >> 12 & 0x3F)
-                 . chr(0x80 | $c >> 6 & 0x3F)
-                 . chr(0x80 | $c & 0x3F);
+                . chr(0x80 | $c >> 12 & 0x3F)
+                . chr(0x80 | $c >> 6 & 0x3F)
+                . chr(0x80 | $c & 0x3F);
         } else {
             return false;
         }
@@ -114,29 +117,22 @@ class Lib
      */
     public static function clear_special_chars($text, $mode = null)
     {
-        if(is_string($mode)) $mode = array($mode);
-        if(is_null($mode)) $mode = array('utf8', 'html');
-        if(!is_array($mode)) return false;
+        if (is_string($mode)) $mode = array($mode);
+        if (is_null($mode)) $mode = array('utf8', 'html');
+        if (!is_array($mode)) return false;
         $moder = array();
-        foreach($mode as $mod) if(in_array($mod, array('utf8','html'))) $moder[] = $mod;
-        if(count($moder)==0) return false;
+        foreach ($mode as $mod) if (in_array($mod, array('utf8', 'html'))) $moder[] = $mod;
+        if (count($moder) == 0) return false;
 
-        foreach (self::$_charsTable as $char => $vals)
-        {
-            foreach ($mode as $type)
-            {
-                if (isset($vals[$type]))
-                {
-                    foreach ($vals[$type] as $v)
-                    {
-                        if ('utf8' === $type && is_int($v))
-                        {
+        foreach (self::$_charsTable as $char => $vals) {
+            foreach ($mode as $type) {
+                if (isset($vals[$type])) {
+                    foreach ($vals[$type] as $v) {
+                        if ('utf8' === $type && is_int($v)) {
                             $v = self::_getUnicodeChar($v);
                         }
-                        if ('html' === $type)
-                        {
-                            if(preg_match("/<[a-z]+>/i",$v))
-                            {
+                        if ('html' === $type) {
+                            if (preg_match("/<[a-z]+>/i", $v)) {
                                 $v = self::safe_tag_chars($v, true);
                             }
                         }
@@ -162,17 +158,13 @@ class Lib
     {
         $ignore = null;
 
-        if (null !== $allowableTag)
-        {
-            if (is_string($allowableTag))
-            {
+        if (null !== $allowableTag) {
+            if (is_string($allowableTag)) {
                 $allowableTag = array($allowableTag);
             }
-            if (is_array($allowableTag))
-            {
+            if (is_array($allowableTag)) {
                 $tags = array();
-                foreach ($allowableTag as $tag)
-                {
+                foreach ($allowableTag as $tag) {
                     if ('<' !== substr($tag, 0, 1) || '>' !== substr($tag, -1, 1)) continue;
                     if ('/' === substr($tag, 1, 1)) continue;
                     $tags [] = $tag;
@@ -180,7 +172,7 @@ class Lib
                 $ignore = implode('', $tags);
             }
         }
-        $text = preg_replace(array('/\<br\s*\/?>/i', '/\<\/p\>\s*\<p\>/'), array("\n","\n\n"), $text);
+        $text = preg_replace(array('/\<br\s*\/?>/i', '/\<\/p\>\s*\<p\>/'), array("\n", "\n\n"), $text);
         $text = strip_tags($text, $ignore);
         return $text;
     }
@@ -198,16 +190,19 @@ class Lib
     public static function safe_tag_chars($text, $way)
     {
         if ($way) {
-            // $text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 1) === "a" ? "%%___"  : ""  ) . Lib::encrypt_tag(trim($m[2]))  . $m[3];'), $text);
+            // $text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', function($m) { return $m[1].( substr(trim($m[2]), 0, 1) === "a" ? "%%___"  : ""  ) . Lib::encrypt_tag(trim($m[2]))  . $m[3];}, $text);
             // Взял изменение из оригинального репозитория. Свои правки закомментил выше
-            $text = preg_replace_callback('/(\<\/?)([^<>]+?)(\>)/s', create_function('$m','return (strlen($m[1])==1 && substr(trim($m[2]), 0, 1) == \'-\' && substr(trim($m[2]), 1, 1) != \'-\')? $m[0] : $m[1].( substr(trim($m[2]), 0, 1) === "a" ? "%%___"  : ""  ) . EMT\Lib::encrypt_tag(trim($m[2]))  . $m[3];'), $text);
-        }
-        else {
-            // $text = preg_replace_callback('/(\<\/?)(.+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? Lib::decrypt_tag(substr(trim($m[2]), 4)) : Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
+            $text = preg_replace_callback('/(\<\/?)([^<>]+?)(\>)/s', function ($m) {
+                return (strlen($m[1]) == 1 && substr(trim($m[2]), 0, 1) == '-' && substr(trim($m[2]), 1, 1) != '-') ? $m[0] : $m[1] . (substr(trim($m[2]), 0, 1) === "a" ? "%%___" : "") . \EMT\Lib::encrypt_tag(trim($m[2])) . $m[3];
+            }, $text);
+        } else {
+            // $text = preg_replace_callback('/(\<\/ ?)(.+?)(\>) / s', function ($m) { return $m[1] . (substr(trim($m[2]), 0, 3) === "%%___" ? Lib::decrypt_tag(substr(trim($m[2]), 4)) : Lib::decrypt_tag(trim($m[2]))) . $m[3];}, $text);
             // Косяк со строками вида: [THD<0,4%, кабель 3 м, Jack 1/4"], из-за < и / неверно преобразует safe tags
-            //$text = preg_replace_callback('/(\<\/?)([a-zA-Z0-9=\%\_\/]+?)(\>)/s', create_function('$m','return $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? Lib::decrypt_tag(substr(trim($m[2]), 4)) : Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
+            //$text = preg_replace_callback(' / (\<\/ ?)([a - zA - Z0 - 9 = \%\_\/]+?)(\>) / s', function ($m) { return $m[1] . (substr(trim($m[2]), 0, 3) === "%%___" ? Lib::decrypt_tag(substr(trim($m[2]), 4)) : Lib::decrypt_tag(trim($m[2]))) . $m[3];}, $text);
             // Взял изменение из оригинального репозитория. Свои правки закомментил выше
-            $text = preg_replace_callback('/(\<\/?)([^<>]+?)(\>)/s', create_function('$m','return (strlen($m[1])==1 && substr(trim($m[2]), 0, 1) == \'-\' && substr(trim($m[2]), 1, 1) != \'-\')? $m[0] : $m[1].( substr(trim($m[2]), 0, 3) === "%%___" ? EMT\Lib::decrypt_tag(substr(trim($m[2]), 4)) : EMT\Lib::decrypt_tag(trim($m[2])) ) . $m[3];'), $text);
+            $text = preg_replace_callback(' / (\<\/ ?)([^<>]+?)(\>) / s', function ($m) {
+                return (strlen($m[1]) == 1 && substr(trim($m[2]), 0, 1) == '-' && substr(trim($m[2]), 1, 1) != '-') ? $m[0] : $m[1] . (substr(trim($m[2]), 0, 3) === "%%___" ? \EMT\Lib::decrypt_tag(substr(trim($m[2]), 4)) : \EMT\Lib::decrypt_tag(trim($m[2]))) . $m[3];
+            }, $text);
         }
         return $text;
     }
@@ -222,8 +217,10 @@ class Lib
     public static function decode_internal_blocks($text)
     {
         $text = preg_replace_callback(
-            '/'.Lib::INTERNAL_BLOCK_OPEN.'([a-zA-Z0-9\/=]+?)'. Lib::INTERNAL_BLOCK_CLOSE.'/s',
-            create_function('$m','return EMT\Lib::decrypt_tag($m[1]);'),
+            ' / ' . Lib::INTERNAL_BLOCK_OPEN . '([a - zA - Z0 - 9\ /=]+?)' . Lib::INTERNAL_BLOCK_CLOSE . ' / s',
+            function ($m) {
+                return \EMT\Lib::decrypt_tag($m[1]);
+            },
             $text
         );
         return $text;
@@ -237,7 +234,7 @@ class Lib
      */
     public static function iblock($text)
     {
-        return Lib::INTERNAL_BLOCK_OPEN. Lib::encrypt_tag($text).Lib::INTERNAL_BLOCK_CLOSE;
+        return Lib::INTERNAL_BLOCK_OPEN . Lib::encrypt_tag($text) . Lib::INTERNAL_BLOCK_CLOSE;
     }
 
 
@@ -249,30 +246,24 @@ class Lib
      * @param   array $attribute список атрибутов, где ключ - имя атрибута, а значение - само значение данного атрибута
      * @return  string
      */
-    public static function build_safe_tag($content, $tag = 'span', $attribute = array(), $layout = Lib::LAYOUT_STYLE )
+    public static function build_safe_tag($content, $tag = 'span', $attribute = array(), $layout = Lib::LAYOUT_STYLE)
     {
         $htmlTag = $tag;
 
-        if (self::$_typographSpecificTagId)
-        {
-            if(!isset($attribute['id']))
-            {
-                $attribute['id'] = 'emt-2' . mt_rand(1000,9999);
+        if (self::$_typographSpecificTagId) {
+            if (!isset($attribute['id'])) {
+                $attribute['id'] = 'emt - 2' . mt_rand(1000, 9999);
             }
         }
 
         $classname = "";
-        if (count($attribute))
-        {
+        if (count($attribute)) {
 
-            if($layout & Lib::LAYOUT_STYLE)
-            {
-                if(isset($attribute['__style']) && $attribute['__style'])
-                {
-                    if(isset($attribute['style']) && $attribute['style'])
-                    {
+            if ($layout & Lib::LAYOUT_STYLE) {
+                if (isset($attribute['__style']) && $attribute['__style']) {
+                    if (isset($attribute['style']) && $attribute['style']) {
                         $st = trim($attribute['style']);
-                        if(mb_substr($st, -1) != ";") $st .= ";";
+                        if (mb_substr($st, -1) != ";") $st .= ";";
                         $st .= $attribute['__style'];
                         $attribute['style'] = $st;
                     } else {
@@ -282,10 +273,9 @@ class Lib
                 }
 
             }
-            foreach ($attribute as $attr => $value)
-            {
-                if($attr == "__style") continue;
-                if($attr == "class") {
+            foreach ($attribute as $attr => $value) {
+                if ($attr == "__style") continue;
+                if ($attr == "class") {
                     $classname = "$value";
                     continue;
                 }
@@ -294,7 +284,7 @@ class Lib
 
         }
 
-        if( ($layout & Lib::LAYOUT_CLASS ) && $classname) {
+        if (($layout & Lib::LAYOUT_CLASS) && $classname) {
             $htmlTag .= " class=\"$classname\"";
         }
 
@@ -310,7 +300,7 @@ class Lib
      */
     public static function encrypt_tag($text)
     {
-        return base64_encode($text)."=";
+        return base64_encode($text) . "=";
     }
 
     /**
@@ -321,34 +311,29 @@ class Lib
      */
     public static function decrypt_tag($text)
     {
-        return base64_decode(substr($text,0,-1));
+        return base64_decode(substr($text, 0, -1));
     }
-
 
 
     public static function strpos_ex(&$haystack, $needle, $offset = null)
     {
-        if(is_array($needle))
-        {
+        if (is_array($needle)) {
             $m = false;
             $w = false;
-            foreach($needle as $n)
-            {
-                $p = strpos($haystack, $n , $offset);
-                if($p===false) continue;
-                if($m === false)
-                {
+            foreach ($needle as $n) {
+                $p = strpos($haystack, $n, $offset);
+                if ($p === false) continue;
+                if ($m === false) {
                     $m = $p;
                     $w = $n;
                     continue;
                 }
-                if($p < $m)
-                {
+                if ($p < $m) {
                     $m = $p;
                     $w = $n;
                 }
             }
-            if($m === false) return false;
+            if ($m === false) return false;
             return array('pos' => $m, 'str' => $w);
         }
         return strpos($haystack, $needle, $offset);
@@ -356,14 +341,15 @@ class Lib
 
     public static function _process_selector_pattern(&$pattern)
     {
-        if($pattern===false) return;
-        $pattern = preg_quote($pattern , '/');
+        if ($pattern === false) return;
+        $pattern = preg_quote($pattern, ' / ');
         $pattern = str_replace("\\*", "[a-z0-9_\-]*", $pattern);
-        $pattern = "/".$pattern."/i";
+        $pattern = "/" . $pattern . "/i";
     }
+
     public static function _test_pattern($pattern, $text)
     {
-        if($pattern === false) return true;
+        if ($pattern === false) return true;
         return preg_match($pattern, $text);
     }
 
@@ -576,8 +562,8 @@ class Lib
         'prop' => 8733,
         'infin' => 8734,
         'ang' => 8736,
-        'and' => 8743,
-        'or' => 8744,
+        ' and ' => 8743,
+        ' or ' => 8744,
         'cap' => 8745,
         'cup' => 8746,
         'int' => 8747,
@@ -652,8 +638,8 @@ class Lib
      */
     public static function html_char_entity_to_numeric_entity($entity)
     {
-        if(isset(self::$html4_char_ents[$entity])) {
-            return '&#' . self::$html4_char_ents[$entity] . ';';
+        if (isset(self::$html4_char_ents[$entity])) {
+            return ' &#' . self::$html4_char_ents[$entity] . ';';
         }
 
         return false;
@@ -664,11 +650,15 @@ class Lib
      *
      * @param string $text
      */
-    public static function convert_html_entities_to_numeric_entity(&$text)
+    public
+    static function convert_html_entities_to_numeric_entity(&$text)
     {
         $text = preg_replace_callback("/\&([a-zA-Z0-9]+)\;/",
-                create_function('$m', '$r = EMT\Lib::html_char_entity_to_numeric_entity($m[1]); return $r ? $r : $m[0];')
-                , $text);
+            function ($m) {
+                $r = \EMT\Lib::html_char_entity_to_numeric_entity($m[1]);
+                return $r ? $r : $m[0];
+            }
+            , $text);
     }
 
     /**
@@ -677,9 +667,10 @@ class Lib
      * @param string $entity
      * @return string
      */
-    public static function html_char_entity_to_unicode($entity)
+    public
+    static function html_char_entity_to_unicode($entity)
     {
-        if(isset(self::$html4_char_ents[$entity])) return self::_getUnicodeChar(self::$html4_char_ents[$entity]);
+        if (isset(self::$html4_char_ents[$entity])) return self::_getUnicodeChar(self::$html4_char_ents[$entity]);
         return false;
     }
 
@@ -688,50 +679,57 @@ class Lib
      *
      * @param string $text
      */
-    public static function convert_html_entities_to_unicode(&$text)
+    public
+    static function convert_html_entities_to_unicode(&$text)
     {
         $text = preg_replace_callback("/\&#([0-9]+)\;/",
-                create_function('$m', 'return EMT\Lib::_getUnicodeChar(intval($m[1]));')
-                , $text);
+            function ($m) {
+                return \EMT\Lib::_getUnicodeChar(intval($m[1]));
+            }
+            , $text);
         $text = preg_replace_callback("/\&#x([0-9A-F]+)\;/",
-                create_function('$m', 'return EMT\Lib::_getUnicodeChar(hexdec($m[1]));')
-                , $text);
+            function ($m) {
+                return \EMT\Lib::_getUnicodeChar(hexdec($m[1]));
+            }
+            , $text);
         $text = preg_replace_callback("/\&([a-zA-Z0-9]+)\;/",
-                create_function('$m', '$r = EMT\Lib::html_char_entity_to_unicode($m[1]); return $r ? $r : $m[0];')
-                , $text);
+            function ($m) {
+                $r = \EMT\Lib::html_char_entity_to_unicode($m[1]);
+                return $r ? $r : $m[0];
+            }
+            , $text);
     }
 
-    public static function rstrpos ($haystack, $needle, $offset = 0){
+    public
+    static function rstrpos($haystack, $needle, $offset = 0)
+    {
 
-        if(trim($haystack) != "" && trim($needle) != "" && $offset <= mb_strlen($haystack))
-        {
+        if (trim($haystack) != "" && trim($needle) != "" && $offset <= mb_strlen($haystack)) {
             $last_pos = $offset;
             $found = false;
-            while(($curr_pos = mb_strpos($haystack, $needle, $last_pos)) !== false)
-            {
+            while (($curr_pos = mb_strpos($haystack, $needle, $last_pos)) !== false) {
                 $found = true;
                 $last_pos = $curr_pos + 1;
             }
-            if($found)
-            {
+            if ($found) {
                 return $last_pos - 1;
-            }
-            else
-            {
+            } else {
                 return false;
             }
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-    public static function ifop($cond, $true, $false) {
+    public
+    static function ifop($cond, $true, $false)
+    {
         return $cond ? $true : $false;
     }
 
-    public static function split_number($num) {
+    public
+    static function split_number($num)
+    {
         return number_format($num, 0, '', ' ');
     }
 
