@@ -217,7 +217,7 @@ class Lib
     public static function decode_internal_blocks($text)
     {
         $text = preg_replace_callback(
-            ' / ' . Lib::INTERNAL_BLOCK_OPEN . '([a - zA - Z0 - 9\ /=]+?)' . Lib::INTERNAL_BLOCK_CLOSE . ' / s',
+            ' / ' . Lib::INTERNAL_BLOCK_OPEN . '([a-z A-Z 0-9 \/=]+?)' . Lib::INTERNAL_BLOCK_CLOSE . ' / s',
             function ($m) {
                 return \EMT\Lib::decrypt_tag($m[1]);
             },
